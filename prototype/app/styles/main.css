@@ -1,7 +1,20 @@
+/*
+ Customs
+ */
+.purple {
+  color:purple;
+  font-weight: bold;
+}
+
+.purple-border {
+  border:solid purple 2px;
+}
+
 /* Space out content a bit */
 body {
   padding-top: 20px;
   padding-bottom: 20px;
+  background-color:lightgray;
 }
 
 /* Everything but the jumbotron gets side spacing for mobile first views */
