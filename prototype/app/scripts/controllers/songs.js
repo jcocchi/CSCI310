@@ -10,19 +10,19 @@
 angular.module('prototypeApp')
     .controller('SongsCtrl', function($scope) {
         $scope.songs = [{
-            title: 'One hell of a title',
+            title: 'We Are The Champions',
             count: 503,
         }, {
-            title: 'One hell of a title 2',
-            count: 5,
-        }, {
-            title: 'One hell of a title 3',
+            title: 'Bohemian Rhapsody',
             count: 50,
         }, {
-            title: 'One hell of a title 4',
+            title: 'Don\'t Stop Me Now',
+            count: 5,
+        }, {
+            title: 'We Will Rock You',
             count: 3,
         }, {
-            title: 'One hell of a title 5',
+            title: 'Another One Bites The Dust',
             count: 1,
         }, ];
     });

@@ -16,24 +16,42 @@ angular.module('prototypeApp')
             };
             return val;
         };
+        // We are the champions, my friends
+        // And well keep on fighting...till the end
+        // We are the champions, We are the champions
+        // No time
+        // for losers cause we are the champions...
+        // Of the world
         $scope.showCloud = function() {
             var words = [{
-                text: 'my',
+                text: 'Champions',
                 weight: 1
             }, {
-                text: 'super',
+                text: 'friends',
                 weight: 2
             }, {
-                text: 'text',
+                text: 'time',
                 weight: 1
             }, {
-                text: 'which',
+                text: 'we',
                 weight: 3
             }, {
-                text: 'is',
+                text: 'are',
                 weight: 1
             }, {
-                text: 'great',
+                text: 'losers',
+                weight: 0.5
+            }, {
+                text: 'world',
+                weight: 0.5
+            }, {
+                text: 'keep',
+                weight: 0.5
+            }, {
+                text: 'on',
+                weight: 0.5
+            }, {
+                text: 'fighting',
                 weight: 0.5
             }, ];
             words.map(applyLink);
