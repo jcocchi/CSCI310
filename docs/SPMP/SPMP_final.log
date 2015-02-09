@@ -1,9 +1,9 @@
-This is pdfTeX, Version 3.1415926-2.5-1.40.14 (TeX Live 2013/Debian) (format=pdflatex 2015.2.2)  9 FEB 2015 08:05
+This is pdfTeX, Version 3.1415926-2.5-1.40.14 (TeX Live 2013/Debian) (format=pdflatex 2015.2.2)  9 FEB 2015 08:07
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
-**SPMP_temp.tex
-(./SPMP_temp.tex
+**SPMP_final.tex
+(./SPMP_final.tex
 LaTeX2e <2011/06/27>
 Babel <3.9h> and hyphenation patterns for 4 languages loaded.
 (/usr/share/texlive/texmf-dist/tex/latex/base/article.cls
@@ -754,8 +754,8 @@ Package hyperref Info: Option `colorlinks' set `true' on input line 58.
 \f@ncyO@olf=\skip59
 \f@ncyO@orf=\skip60
 )
-(./SPMP_temp.aux)
-\openout1 = `SPMP_temp.aux'.
+(./SPMP_final.aux)
+\openout1 = `SPMP_final.aux'.
 
 LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 80.
 LaTeX Font Info:    ... okay on input line 80.
@@ -851,16 +851,15 @@ LaTeX Info: Redefining \ref on input line 80.
 LaTeX Info: Redefining \pageref on input line 80.
 LaTeX Info: Redefining \nameref on input line 80.
 
-(./SPMP_temp.out) (./SPMP_temp.out)
+(./SPMP_final.out) (./SPMP_final.out)
 \@outlinefile=\write3
-\openout3 = `SPMP_temp.out'.
+\openout3 = `SPMP_final.out'.
 
 LaTeX Font Info:    Try loading font information for OT1+lmr on input line 83.
  (/usr/share/texmf/tex/latex/lm/ot1lmr.fd
 File: ot1lmr.fd 2009/10/30 v1.6 Font defs for Latin Modern
 )
 LaTeX Font Info:    Try loading font information for OML+lmm on input line 83.
-
 (/usr/share/texmf/tex/latex/lm/omllmm.fd
 File: omllmm.fd 2009/10/30 v1.6 Font defs for Latin Modern
 )
@@ -899,7 +898,7 @@ File: umsb.fd 2013/01/14 v3.01 AMS symbols B
 File: mt-msb.cfg 2005/06/01 v1.0 microtype config. file: AMS symbols (b) (RS)
 ) [1
 
-{/var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map}] (./SPMP_temp.toc
+{/var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map}] (./SPMP_final.toc
 LaTeX Font Info:    External font `lmex10' loaded for size
 (Font)              <10> on input line 3.
 LaTeX Font Info:    External font `lmex10' loaded for size
@@ -908,7 +907,7 @@ LaTeX Font Info:    External font `lmex10' loaded for size
 (Font)              <5> on input line 3.
  [2])
 \tf@toc=\write4
-\openout4 = `SPMP_temp.toc'.
+\openout4 = `SPMP_final.toc'.
 
  [3] [4] [5]
 Underfull \vbox (badness 10000) detected at line 309
@@ -1005,22 +1004,26 @@ Package atveryend Info: Empty hook `BeforeClearDocument' on input line 1569.
  [35 <./seb.pdf>]
 Package atveryend Info: Empty hook `AfterLastShipout' on input line 1569.
 
-(./SPMP_temp.aux)
+(./SPMP_final.aux)
 Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 1569.
 Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 1569.
 
-Package rerunfilecheck Info: File `SPMP_temp.out' has not changed.
+Package rerunfilecheck Info: File `SPMP_final.out' has not changed.
 (rerunfilecheck)             Checksum: DA98C0789B28C20D93788F80CA6C95EE;7647.
+
+
+LaTeX Warning: Label(s) may have changed. Rerun to get cross-references right.
+
 Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 1569.
  ) 
 Here is how much of TeX's memory you used:
  12194 strings out of 494985
- 174861 string characters out of 6180357
- 281146 words of memory out of 5000000
+ 174876 string characters out of 6180357
+ 281143 words of memory out of 5000000
  15049 multiletter control sequences out of 15000+600000
  58378 words of font info for 102 fonts, out of 8000000 for 9000
  36 hyphenation exceptions out of 8191
- 31i,12n,43p,799b,518s stack positions out of 5000i,500n,10000p,200000b,80000s
+ 31i,12n,43p,800b,518s stack positions out of 5000i,500n,10000p,200000b,80000s
 {/usr/share/texmf/fonts/enc/dvips/lm/lm-rm.enc}{/usr/share/texmf/fonts/enc/dv
 ips/lm/lm-mathsy.enc}{/usr/share/texmf/fonts/enc/dvips/lm/lm-mathex.enc}{/usr/s
 hare/texmf/fonts/enc/dvips/lm/lm-mathit.enc}{/usr/share/texmf/fonts/enc/dvips/l
@@ -1033,7 +1036,7 @@ ublic/lm/lmr12.pfb></usr/share/texmf/fonts/type1/public/lm/lmr17.pfb></usr/shar
 e/texmf/fonts/type1/public/lm/lmr7.pfb></usr/share/texmf/fonts/type1/public/lm/
 lmri10.pfb></usr/share/texmf/fonts/type1/public/lm/lmsy10.pfb></usr/share/texmf
 /fonts/type1/public/lm/lmsy7.pfb>
-Output written on SPMP_temp.pdf (35 pages, 1168451 bytes).
+Output written on SPMP_final.pdf (35 pages, 1168610 bytes).
 PDF statistics:
  646 PDF objects out of 1000 (max. 8388607)
  538 compressed objects within 6 object streams
