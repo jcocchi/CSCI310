@@ -41,7 +41,9 @@ The current group process in place for the development team is to meet as an ent
 The C-Lyrics team will consist of the members of the development team. Each member is proficient in object oriented design and concepts, and has some familiarity with web development. Knowledge of git and other version control methods is a must. The duration of need will be until the last milestone and deliverable is reached. Each member will be assigned tasks based on his or her prior knowledge. Since there will be no training, members will have to research on the job if they are insufficiently prepared. Personnel will not be phased out and retention will not be a factor.
 
 ###2.2.3 Staff Allocation
-SEE PICTURES
+See *Figure 1* for a detailed view of the staff allocation.
+
+![Staff Allocation](StaffAllocation.png "Staff Allocation")
 
 
 ###2.2.4 Team Member Description
@@ -102,12 +104,14 @@ Some of the external costs that are not directly factored into the project costs
 
 #4. Schedule, Milestones, and Deliverables
 ##4.1 Schedule
-SEE PICTURE
+See *Figure 2* for a detailed view of the staff allocation.
 
+![Schedule](schedule.png "Schedule")
 
 ##4.1.1 Activity Network
+See *Figure 3* for a detailed view of the staff allocation, and section 4.2 for the specific task encompassed in each milestone.
 
-(See section 4.2 for the specific task encompassed in each milestone.)
+![Activity Network](ActivityNetwork.png "Activity Network")
 
 ##4.2 Project Milestones and Deliverables
 The process model for our project is the Waterfall Model, meaning we will finish each big software development phase before we start the next. We will finish requirements engineering before starting the project design, which will be finished before we start implementation, which will be finished before we start testing, which will be finished before we arrive at the final phase of project, maintenance.
@@ -303,63 +307,32 @@ Tolerable
 
 ##6.3 Risk Planning
 SEE TABLE
-Risk No.
-Strategy Type
-Solution
-1
-Avoidance
-Make smarter test cases that cover more areas of vulnerability in a smaller amount of API queries.
-2
-Avoidance
-Host the software on a reliable server, or perhaps change the hosting location based off of previous crashing problems..
-3
-Avoidance
-Select a more robust hosting service.
-4
-Contingency Plan
-Allocate staff members to develop parts of the project that best suits their skills. If no one is familiar with the language or practices required, work in teams of two to promote collaboration
-5
-Contingency Plan
-Assign the tasks of the ill staff member to various other members, while the ill staff member can update the new members on the current state of the task.
-6
-Contingency Plan
-Delay the deliverable output, or submit the incomplete deliverable and patch the mistakes later when given more time.
-7
-Minimisation
-Update the new staff member with the current state of the software and introduce low level tasks to help get him or her up to speed.
-8
-Minimisation
-Allocate the work of the quitting staff member among the remaining team members.
-9
-Contingency Plan
-Find new tools to fill the needs of the software.
-10
-Contingency Plan
-Update previous documents with the new information and fill out a revision history of each document. Change the code to fit the demands and, depending on the magnitude of the desired changes, restructuring of the software may be necessary.
-11
-Contingency Plan
-Depending on the amount of change desired by the client, the staff may have to create new documents entirely and essentially start a new project.
-12
-Contingency Plan
-Change the deliverable dates to compensate for a new estimated time using COCOMO.
-13
-Minimisation
-To compensate for more users than previously intended, the software may have to be altered to more effectively handle storage, the EchoNest API licensing may have to be purchased to allow more requests, and the server will need to be able to handle more requests.
-14
-Minimisation
-Hold team members more accountable for his or her own tasks. Part of this can be achieved by instilling a productive atmosphere during meetings and other official work times. If there continues to be problems with a flat organization, a hierarchy may need to be introduced to inspire more efficient work.
-15
-Contingency Plan
-The development team will have to work around the inefficiencies of the waterfall method. Switching to Agile methodology is not an option.
-16
-Avoidance
-The development team will need to structure the code in a way that produces results in the quickest way possible. If it is too slow, restructuring may be required. Caching results is one way to speed up results.
-17
-Avoidance
-If the requirements specified by the client is different than what is implemented, the development team will have to fix the unwanted components. This can be avoided by following the requirements document closely, assuming the client specified everything during the formation of the requirements document.
-18
-Avoidance
-The development team should follow the requirements document regardless of the opinions of the team on the specifications of components.
 
 ##6.4 Risk Monitoring
 Throughout the development cycle, the team will have to monitor each risk regularly and prepare for it depending on the estimated likelihood that it will occur. Each member will be aware of the risk pertaining to his or her tasks and discuss the chance that they occur at each meeting. Many risks do not involve the actual implementation and cannot be anticipated, therefore these risks can be ignored during team meetings. Larger risks for a particular milestone or deliverable can be noted in the github issue tracker along with the regular team meeting procedure.
+
+#7. Appendices
+
+##A.1: Appendix 1: Meetings with Customer
+
+### Change to Requirements
+* On February 5, 2015, the client indicated a change in the text color preferences for the WC. Before, the client required the text color of the WC to be black. Now, there should be different, randomly assigned colors for each word.
+
+###Added Details
+* Search bar should be user friendly, user should be able to leave out common words and still get an accurate suggestion.
+* Search bar should have some sort of direction for the user as to how he/she should proceed
+
+##A.2: Appendix 2: Metric and Measurement
+TODO ! (Formulae in Latex)
+
+##A.3: Appendix 3: COCOMO Details
+
+We used the COCOMO II model for estimating the work required to complete our project because it is an effective standard formula that takes initial assumptions and makes a useful projection from them. Although the cost drivers operate based on assumed levels, we feel that the calculation takes several important factors into account, making up for any subjectivity. The individual assumptions for why we chose certain levels for each driver is listed in section 3.3. We also made an assumption for the KSLOC, estimating that our project will reach about 1,000 source lines of code. We are assuming that the project will be rather small compared to industry software projects since the website does not need to be excessively robust in design and functionality.
+
+###Formula
+$$
+E(person-months) = b \cdot KLOC^c
+$$
+(our estimation for KLOC approx = 1)
+
+##A.4: Appendix 4: Resumes

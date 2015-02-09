@@ -20,6 +20,26 @@
 \fi
 % use microtype if available
 \IfFileExists{microtype.sty}{\usepackage{microtype}}{}
+\usepackage{longtable,booktabs}
+\usepackage{graphicx}
+% Redefine \includegraphics so that, unless explicit options are
+% given, the image width will not exceed the width of the page.
+% Images get their normal width if they fit onto the page, but
+% are scaled down if they would overflow the margins.
+\makeatletter
+\def\ScaleIfNeeded{%
+  \ifdim\Gin@nat@width>\linewidth
+    \linewidth
+  \else
+    \Gin@nat@width
+  \fi
+}
+\makeatother
+\let\Oldincludegraphics\includegraphics
+{%
+ \catcode`\@=11\relax%
+ \gdef\includegraphics{\@ifnextchar[{\Oldincludegraphics}{\Oldincludegraphics[width=\ScaleIfNeeded]}}%
+}%
 \ifxetex
   \usepackage[setpagesize=false, % page size defined by xetex
               unicode=false, % unicode breaks when used with xetex
@@ -41,13 +61,40 @@
 \setlength{\parskip}{6pt plus 2pt minus 1pt}
 \setlength{\emergencystretch}{3em}  % prevent overfull lines
 \setcounter{secnumdepth}{0}
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\lhead{C-Lyrics - A Word Cloud for Lyrics}
+\rhead{\thepage}
+\cfoot{Team 6}
+\renewcommand{\headrulewidth}{0.4pt}
+\renewcommand{\footrulewidth}{0.4pt}
 
-\author{}
-\date{}
+\title{Clyrics - A Word Cloud for Lyrics}
+\author{Justine Cocchi\\jcocchi@usc.edu \and Kelsey Fargas\\kfargas@usc.edu \and Mark Krant \\ mkrant@usc.edu\and Milad Gueramian\\gueramia@usc.edu \and Jeff Kang\\kangjr@usc.edu \and Séb Arnold\\arnolds@usc.edu}
+\date{2 February 2015}
 
+\title{%
+	C-lyrics - A Word Cloud for Lyrics \\
+	\large Software Project Management Plan}
+    
 \begin{document}
 
-\title{C-Lyrics - Software Project Management Plan}
+\maketitle
+
+\pagebreak
+
+\tableofcontents
+\setcounter{tocdepth}{4}
+
+\pagebreak
+
+\section{Executive Summary}\label{executive-summary}
+
+C-lyrics is a public website that will generate a word cloud for any given artist based on the 250 most frequently used words that appear across all of the artist’s published songs. This product will interface with the EchoNest API which will serve as the database from which we find and analyze the songs. By clicking on a specific word in the word cloud the user can see a list of all of the songs that word appears in and how frequently it occurs in each song. Furthermore, the user can click on any listed song title to see the complete lyrics for that song with the original word selected from the word cloud highlighted every time it appears. 
+
+C-lyrics is intended for use by the general public. There will be no login required and there is no stored history of previous searches. Because of this we will have very low memory requirements and can run the product off of one server. The user can access C-lyrics using any device running any OS. After typing in the artist name and selecting the submit button, the word cloud will be generated in approximately one second and will be able to be shared via Facebook. 
+
+\pagebreak
 
 \section{1. Introduction}\label{introduction}
 
@@ -123,65 +170,251 @@ Requirements Specifications. IEEE Computer Society, 1998.
 \subsection{1.5 Definitions and
 Acronyms}\label{definitions-and-acronyms}
 
-Term Definition AJAX Asynchronous JavaScript And XML. Technology
-allowing the transfer of data from between the front- and back-end
-without reloading the web page. API (EchoNest) API will refer to the
-EchoNest API. EchoNest is a free API that allows developers to retrieve
-lyrics and artist information in web pages and other programs.
-Autocomplete Autocomplete refers to the functionality addition to the
-Search Bar, allowing users to enter minimal characters and choose
-artists that are most similar to the string and display a picture of
-those artists next to their name. Autocomplete Delay A feature designed
-for the search bar when a user is typing. The delay refers to the
-suspending action while the user is typing, making the request to the
-server for autocomplete. Backend References the PHP backend page Back to
-home button A button redirecting the user to the homepage. Back to songs
-button A button redirecting the user to the songs list page. Commonly
-Used Web Browser Browsers such as Firefox, Safari, Chrome, Explorer, and
-Quora which come on mobile phones, tablets and personal computers.
-Customer/Client Dr.~William G. Halfond and Sonal Mahajan GitHub A web
-service that provides software version control tools. www.github.com
-Stakeholders The client and the development team LOC acronym: for Lines
-of Code KSLOC a metric that stands for: 1,000(K) Source Lines of Code
-Desktop Platform A screen whose width exceeds 560px Development Team All
-of the individuals whose names appear on the cover of this document.
+\begin{longtable}[c]{@{}ll@{}}
+\toprule\addlinespace
+\begin{minipage}[t]{0.47\columnwidth}\raggedright
+Term
+\end{minipage} & \begin{minipage}[t]{0.47\columnwidth}\raggedright
+Definition
+\end{minipage}
+\\
+\hline
+\\\addlinespace
+\begin{minipage}[t]{0.47\columnwidth}\raggedright
+AJAX
+\end{minipage} & \begin{minipage}[t]{0.47\columnwidth}\raggedright
+Asynchronous JavaScript And XML. Technology allowing the transfer of
+data from between the front- and back-end without reloading the web
+page.
+\end{minipage}
+\\\addlinespace
+\begin{minipage}[t]{0.47\columnwidth}\raggedright
+API (EchoNest)
+\end{minipage} & \begin{minipage}[t]{0.47\columnwidth}\raggedright
+API will refer to the EchoNest API. EchoNest is a free API that allows
+developers to retrieve lyrics and artist information in web pages and
+other programs.
+\end{minipage}
+\\\addlinespace
+\begin{minipage}[t]{0.47\columnwidth}\raggedright
+Autocomplete
+\end{minipage} & \begin{minipage}[t]{0.47\columnwidth}\raggedright
+Autocomplete refers to the functionality addition to the Search Bar,
+allowing users to enter minimal characters and choose artists that are
+most similar to the string and display a picture of those artists next
+to their name.
+\end{minipage}
+\\\addlinespace
+\begin{minipage}[t]{0.47\columnwidth}\raggedright
+Autocomplete Delay
+\end{minipage} & \begin{minipage}[t]{0.47\columnwidth}\raggedright
+A feature designed for the search bar when a user is typing. The delay
+refers to the suspending action while the user is typing, making the
+request to the server for autocomplete.
+\end{minipage}
+\\\addlinespace
+\begin{minipage}[t]{0.47\columnwidth}\raggedright
+Backend
+\end{minipage} & \begin{minipage}[t]{0.47\columnwidth}\raggedright
+References the PHP backend page
+\end{minipage}
+\\\addlinespace
+\begin{minipage}[t]{0.47\columnwidth}\raggedright
+Back to home button
+\end{minipage} & \begin{minipage}[t]{0.47\columnwidth}\raggedright
+A button redirecting the user to the homepage.
+\end{minipage}
+\\\addlinespace
+\begin{minipage}[t]{0.47\columnwidth}\raggedright
+Back to songs button
+\end{minipage} & \begin{minipage}[t]{0.47\columnwidth}\raggedright
+A button redirecting the user to the songs list page.
+\end{minipage}
+\\\addlinespace
+\begin{minipage}[t]{0.47\columnwidth}\raggedright
+Commonly Used Web Browser
+\end{minipage} & \begin{minipage}[t]{0.47\columnwidth}\raggedright
+Browsers such as Firefox, Safari, Chrome, Explorer, and Quora which come
+on mobile phones, tablets and personal computers.
+\end{minipage}
+\\\addlinespace
+\begin{minipage}[t]{0.47\columnwidth}\raggedright
+Customer/Client
+\end{minipage} & \begin{minipage}[t]{0.47\columnwidth}\raggedright
+Dr. William G. Halfond and Sonal Mahajan
+\end{minipage}
+\\\addlinespace
+\begin{minipage}[t]{0.47\columnwidth}\raggedright
+GitHub
+\end{minipage} & \begin{minipage}[t]{0.47\columnwidth}\raggedright
+A web service that provides software version control tools.
+www.github.com
+\end{minipage}
+\\\addlinespace
+\begin{minipage}[t]{0.47\columnwidth}\raggedright
+Stakeholders
+\end{minipage} & \begin{minipage}[t]{0.47\columnwidth}\raggedright
+The client and the development team
+\end{minipage}
+\\\addlinespace
+\begin{minipage}[t]{0.47\columnwidth}\raggedright
+LOC
+\end{minipage} & \begin{minipage}[t]{0.47\columnwidth}\raggedright
+acronym: for Lines of Code
+\end{minipage}
+\\\addlinespace
+\begin{minipage}[t]{0.47\columnwidth}\raggedright
+KSLOC
+\end{minipage} & \begin{minipage}[t]{0.47\columnwidth}\raggedright
+a metric that stands for: 1,000(K) Source Lines of Code
+\end{minipage}
+\\\addlinespace
+\begin{minipage}[t]{0.47\columnwidth}\raggedright
+Desktop Platform
+\end{minipage} & \begin{minipage}[t]{0.47\columnwidth}\raggedright
+A screen whose width exceeds 560px
+\end{minipage}
+\\\addlinespace
+\begin{minipage}[t]{0.47\columnwidth}\raggedright
+Development Team
+\end{minipage} & \begin{minipage}[t]{0.47\columnwidth}\raggedright
+All of the individuals whose names appear on the cover of this document.
 These persons have collectively put this document together and will
 collectively implement the software product described in subsequent
-sections. Facebook Online social network service where the generated
-word cloud image may be shared amongst users. Google Doc An online
-service provided by Google Inc. where an editable document can be
-accessed and change simultaneously by the members who have been given
+sections.
+\end{minipage}
+\\\addlinespace
+\begin{minipage}[t]{0.47\columnwidth}\raggedright
+Facebook
+\end{minipage} & \begin{minipage}[t]{0.47\columnwidth}\raggedright
+Online social network service where the generated word cloud image may
+be shared amongst users.
+\end{minipage}
+\\\addlinespace
+\begin{minipage}[t]{0.47\columnwidth}\raggedright
+Google Doc
+\end{minipage} & \begin{minipage}[t]{0.47\columnwidth}\raggedright
+An online service provided by Google Inc. where an editable document~can
+be accessed and change simultaneously by the members who have been given
 access to the document. In the case of the development team, google doc
 is the shared resource which contains the source of this SRS document.
-Home Page The first page of the website visited by the user. It contains
-the Word Cloud as well as the Search Bar. Lyrics Page The third page of
-the website, it contains the lyrics for one song, which is chosen by the
-user on the Songs Page. It will have two Navigation Buttons that can
-take the user to either the Home Page or back to the Songs Page. Mobile
-Platform A screen whose width is less than or equal to 560px Navigation
-Buttons Refers to any button that takes the user to previously visited
-pages of the website. Software Project Management Plan (SPMP) Refers to
-this document. Prototype A small prototype of the software including the
-barebones of the graphical display. Used during the second meeting with
-the client, screenshots available in the appendices. Search Bar The
-initial search bar on the first page of the website. Here, users can
-type in artist or band names to generate a word cloud. Share Button The
-standard, embeddable Facebook share button. Software or Product The
-application software delivered from the supplier to the customer. Song
-List This will be the culmination of all songs found that contain the
-search word indicated by the user. Songs Page The second page of the
-website. It contains the Song List as well as a Navigation Button back
-to the Home Page. The user navigates to the Songs page by clicking on a
-word in the Word Cloud on the Home page. Submit Button The button
-adjacent to the Search Bar. When the user enters an artist name into the
-Search Bar and is ready to generate the Word Cloud, he or she must click
-on the Submit Button to begin the process. Supplier The team developing
-the product for the customer. System The set of machines running the
-software making it accessible to the user. User A person who interacts
-with C-lyrics software Word Cloud (WC) A word cloud (otherwise known as
-a tag cloud) is, according to the Oxford Dictionary, an image composed
-of words used in a particular text or subject, in which the size of each
-word indicates its frequency or importance {[}2{]}.
+\end{minipage}
+\\\addlinespace
+\begin{minipage}[t]{0.47\columnwidth}\raggedright
+Home Page
+\end{minipage} & \begin{minipage}[t]{0.47\columnwidth}\raggedright
+The first page of the website visited by the user. It contains the Word
+Cloud as well as the Search Bar.
+\end{minipage}
+\\\addlinespace
+\begin{minipage}[t]{0.47\columnwidth}\raggedright
+Lyrics Page
+\end{minipage} & \begin{minipage}[t]{0.47\columnwidth}\raggedright
+The third page of the website, it contains the lyrics for one song,
+which is chosen by the user on the Songs Page. It will have two
+Navigation Buttons that can take the user to either the Home Page or
+back to the Songs Page.
+\end{minipage}
+\\\addlinespace
+\begin{minipage}[t]{0.47\columnwidth}\raggedright
+Mobile Platform
+\end{minipage} & \begin{minipage}[t]{0.47\columnwidth}\raggedright
+A screen whose width is less than or equal to 560px
+\end{minipage}
+\\\addlinespace
+\begin{minipage}[t]{0.47\columnwidth}\raggedright
+Navigation Buttons
+\end{minipage} & \begin{minipage}[t]{0.47\columnwidth}\raggedright
+Refers to any button that takes the user to previously visited pages of
+the website.
+\end{minipage}
+\\\addlinespace
+\begin{minipage}[t]{0.47\columnwidth}\raggedright
+Software Project Management Plan (SPMP)
+\end{minipage} & \begin{minipage}[t]{0.47\columnwidth}\raggedright
+Refers to this document.
+\end{minipage}
+\\\addlinespace
+\begin{minipage}[t]{0.47\columnwidth}\raggedright
+Prototype
+\end{minipage} & \begin{minipage}[t]{0.47\columnwidth}\raggedright
+A small prototype of the software including the barebones of the
+graphical display. Used during the second meeting with the client,
+screenshots available in the appendices.
+\end{minipage}
+\\\addlinespace
+\begin{minipage}[t]{0.47\columnwidth}\raggedright
+Search Bar
+\end{minipage} & \begin{minipage}[t]{0.47\columnwidth}\raggedright
+The initial search bar on the first page of the website. Here, users can
+type in artist or band names to generate a word cloud.
+\end{minipage}
+\\\addlinespace
+\begin{minipage}[t]{0.47\columnwidth}\raggedright
+Share Button
+\end{minipage} & \begin{minipage}[t]{0.47\columnwidth}\raggedright
+The standard, embeddable Facebook share button.
+\end{minipage}
+\\\addlinespace
+\begin{minipage}[t]{0.47\columnwidth}\raggedright
+Software or Product
+\end{minipage} & \begin{minipage}[t]{0.47\columnwidth}\raggedright
+The application software delivered from the supplier to the customer.
+\end{minipage}
+\\\addlinespace
+\begin{minipage}[t]{0.47\columnwidth}\raggedright
+Song List
+\end{minipage} & \begin{minipage}[t]{0.47\columnwidth}\raggedright
+This will be the culmination of all songs found that contain the search
+word indicated by the user.
+\end{minipage}
+\\\addlinespace
+\begin{minipage}[t]{0.47\columnwidth}\raggedright
+Songs Page
+\end{minipage} & \begin{minipage}[t]{0.47\columnwidth}\raggedright
+The second page of the website. It contains the Song List as well as a
+Navigation Button back to the Home Page. The user navigates to the Songs
+page by clicking on a word in the Word Cloud on the Home page.
+\end{minipage}
+\\\addlinespace
+\begin{minipage}[t]{0.47\columnwidth}\raggedright
+Submit Button
+\end{minipage} & \begin{minipage}[t]{0.47\columnwidth}\raggedright
+The button adjacent to the Search Bar. When the user enters an artist
+name into the Search Bar and is ready to generate the Word Cloud, he or
+she must click on the Submit Button to begin the process.
+\end{minipage}
+\\\addlinespace
+\begin{minipage}[t]{0.47\columnwidth}\raggedright
+Supplier
+\end{minipage} & \begin{minipage}[t]{0.47\columnwidth}\raggedright
+The team developing the product for the customer.
+\end{minipage}
+\\\addlinespace
+\begin{minipage}[t]{0.47\columnwidth}\raggedright
+System
+\end{minipage} & \begin{minipage}[t]{0.47\columnwidth}\raggedright
+The set of machines running the software making it accessible to the
+user.
+\end{minipage}
+\\\addlinespace
+\begin{minipage}[t]{0.47\columnwidth}\raggedright
+User
+\end{minipage} & \begin{minipage}[t]{0.47\columnwidth}\raggedright
+A person who interacts with C-lyrics software
+\end{minipage}
+\\\addlinespace
+\begin{minipage}[t]{0.47\columnwidth}\raggedright
+Word Cloud (WC)
+\end{minipage} & \begin{minipage}[t]{0.47\columnwidth}\raggedright
+A word cloud (otherwise known as a tag cloud) is, according to the
+Oxford Dictionary, an image composed of words used in a particular text
+or subject, in which the size of each word indicates its frequency or
+importance {[}2{]}.
+\end{minipage}
+\\\addlinespace
+\bottomrule
+\end{longtable}
 
 \section{2. Process and Organization}\label{process-and-organization}
 
@@ -231,7 +464,13 @@ will not be a factor.
 
 \subsubsection{2.2.3 Staff Allocation}\label{staff-allocation}
 
-SEE PICTURES
+See \emph{Figure 1} for a detailed view of the staff allocation.
+
+\begin{figure}[htbp]
+\centering
+\includegraphics{StaffAllocation.png}
+\caption{Staff Allocation}
+\end{figure}
 
 \subsubsection{2.2.4 Team Member
 Description}\label{team-member-description}
@@ -267,11 +506,22 @@ Our development costs have been estimated using the COCOMO II Model. The
 following results are estimates of the cost drivers that are applied to
 the model {[}4{]}.
 
-----check table---- Product Factors Reliability required: very low, 0.75
-Database size: low, 0.93
 
-Product complexity: low, 0.88 Required reusability: nominal, 1.00
-Documentation needs: very high, 1.13
+\begin{center}
+\textbf{Product Factors} \\
+{
+\centering
+\begin{tabular}{ p{4cm} | p{4cm} }
+Criteria & Value \\
+\hline
+Reliability required & very low, 0.75 \\
+Database size & low, 0.93\\
+Product complexity & low, 0.88 \\
+Required reusability & nominal, 1.00\\
+Documentation needs & very high, 1.13\\
+\end{tabular}
+}
+\end{center}
 
 The project requires very low reliability, since it would only pose a
 slight inconvenience if the C-lyrics platform encountered problems and
@@ -284,9 +534,20 @@ is nominal, since components only need to be reused within the project.
 The documentation relative to the complexity of our project is very
 high.
 
----check table--- Platform Factors Execution-time constraints: nominal,
-1.0 Main storage constraints: nominal, 1.0 Platform volatility: low,
-0.87
+
+\begin{center}
+\textbf{Platform Factors} \\
+{
+\centering
+\begin{tabular}{ p{4cm} | p{4cm} }
+Criteria & Value \\
+\hline
+Execution-time constraints & nominal, 1.0 \\
+Main storage constraints & nominal, 1.0\\
+Platform volatility & low, 0.87\\
+\end{tabular}
+}
+\end{center}
 
 The execution-time constraints are nominal since we will require less
 than 50\% of available execution time. The main storage constraints are
@@ -294,10 +555,22 @@ nominal since we will require less than 50\% of available system
 storage. Platform volatility is low since the hardware and software
 required to run our program will not need frequent updates.
 
----check table--- Personnel Factors Analyst capability: very low, 1.50
-Programmer capability: low, 1.16 Application experience: very low, 1.22
-Platform experience: low, 1.10 Language and tool experience: low, 1.12
-Personnel continuity: very high, 0.84
+\begin{center}
+\textbf{Personnel Factors} \\
+{
+\centering
+\begin{tabular}{ p{4cm} | p{4cm} }
+Criteria & Value \\
+\hline
+Analyst capability & very low, 1.50 \\
+Programmer capability & low, 1.16 \\
+Application experience & very low, 1.22 \\
+Platform experience & low, 1.10 \\
+Language and tool experience & low, 1.12 \\
+Personnel continuity & very high, 0.84 \\
+\end{tabular}
+}
+\end{center}
 
 Analyst capability is very low since the group's ability to create
 detailed, high-level design for software projects is minimal. Programmer
@@ -308,9 +581,19 @@ two functional languages and little experience with software tools.
 Personnel continuity is very high since all members of the team will
 continue to be working together over the course of the project.
 
----check table--- Project Factors Use of software tools: low, 1.12
-Multi-site development: very high, 0.84 Required development schedule:
-very high, 1.0
+\begin{center}
+\textbf{Project Factors} \\
+{
+\centering
+\begin{tabular}{ p{4cm} | p{4cm} }
+Criteria & Value \\
+\hline
+Use of software tools & low, 1.12 \\
+Multi-site development & very high, 0.84 \\
+Required development schedule & very high, 1.0 \\
+\end{tabular}
+}
+\end{center}
 
 The use of software tools is designated as low because we will not be
 using highly developed tools that are structured for the purposes of our
@@ -337,11 +620,24 @@ Deliverables}\label{schedule-milestones-and-deliverables}
 
 \subsection{4.1 Schedule}\label{schedule}
 
-SEE PICTURE
+See \emph{Figure 2} for a detailed view of the staff allocation.
+
+\begin{figure}[htbp]
+\centering
+\includegraphics{schedule.png}
+\caption{Schedule}
+\end{figure}
 
 \subsection{4.1.1 Activity Network}\label{activity-network}
 
-(See section 4.2 for the specific task encompassed in each milestone.)
+See \emph{Figure 3} for a detailed view of the staff allocation, and
+section 4.2 for the specific task encompassed in each milestone.
+
+\begin{figure}[htbp]
+\centering
+\includegraphics{ActivityNetwork.png}
+\caption{Activity Network}
+\end{figure}
 
 \subsection{4.2 Project Milestones and
 Deliverables}\label{project-milestones-and-deliverables}
@@ -364,24 +660,26 @@ Deliverables and Milestones:
 \itemsep1pt\parskip0pt\parsep0pt
 \item
   Project Management
-  Plan\ldots{}\ldots{}\ldots{}\ldots{}\ldots{}\ldots{}\ldots{}\ldots{}\ldots{}\ldots{}\ldots{}\ldots{}\ldots{}\ldots{}\ldots{}\ldots{}.2/9/15
+  Plan
+  \ldots{}\ldots{}\ldots{}\ldots{}\ldots{}\ldots{}\ldots{}\ldots{}\ldots{}\ldots{}\ldots{}\ldots{}\ldots{}
+  2/9/15
 \item
   There are no specific milestones for this deliverable as it will be
   worked on by all team members and completed in full by February 9th.
 \item
-  Design\ldots{}\ldots{}\ldots{}\ldots{}\ldots{}\ldots{}\ldots{}\ldots{}\ldots{}\ldots{}\ldots{}\ldots{}\ldots{}\ldots{}\ldots{}\ldots{}\ldots{}\ldots{}\ldots{}\ldots{}\ldots{}\ldots{}\ldots{}\ldots{}2/18/15*
+  Design\ldots{}\ldots{}\ldots{}\ldots{}\ldots{}\ldots{}\ldots{}\ldots{}\ldots{}\ldots{}\ldots{}\ldots{}\ldots{}\ldots{}\ldots{}\ldots{}\ldots{}\ldots{}\ldots{}2/18/15*
 \item
-  Milestones A-C (2 SPACES)
+  Milestones A-C
 
   \begin{itemize}
   \itemsep1pt\parskip0pt\parsep0pt
   \item
-    A: Design of the Home Page ( 5 SPACES)
+    A: Design of the Home Page
 
     \begin{itemize}
     \itemsep1pt\parskip0pt\parsep0pt
     \item
-      A.1: Search bar (9 SPACES)
+      A.1: Search bar
     \item
       A.2: WC generation
     \item
@@ -413,7 +711,7 @@ Deliverables and Milestones:
     \end{itemize}
   \end{itemize}
 \item
-  Implementation\ldots{}..\ldots{}\ldots{}\ldots{}\ldots{}\ldots{}\ldots{}\ldots{}\ldots{}\ldots{}\ldots{}\ldots{}\ldots{}\ldots{}\ldots{}\ldots{}\ldots{}\ldots{}\ldots{}..3/4/15*
+  Implementation\ldots{}\ldots{}\ldots{}\ldots{}\ldots{}\ldots{}\ldots{}\ldots{}\ldots{}\ldots{}\ldots{}\ldots{}\ldots{}\ldots{}\ldots{}\ldots{}..3/4/15*
 \item
   Milestones D-F
 
@@ -471,7 +769,7 @@ Deliverables and Milestones:
   \end{itemize}
 \item
   Testing and Final
-  Delivery\ldots{}..\ldots{}\ldots{}\ldots{}\ldots{}\ldots{}\ldots{}\ldots{}\ldots{}\ldots{}\ldots{}..\ldots{}\ldots{}\ldots{}\ldots{}3/11/15*
+  Delivery\ldots{}\ldots{}\ldots{}\ldots{}\ldots{}\ldots{}\ldots{}\ldots{}\ldots{}..\ldots{}\ldots{}\ldots{}\ldots{}3/11/15*
 \item
   Milestones G-J
 
@@ -629,107 +927,497 @@ to Github and mark the task in the issue tracker as completed.
 
 \subsection{6.1 Risk Identification}\label{risk-identification}
 
-SEE TABLE Risk Type Possible Risks Technology The maximum number of
-queries allowed on EchoNest is reached during testing. The server that
-is hosting the domain goes down. The website traffic is overloaded,
-causing a crash. The real-time performance of the software is
-inadequate. People Staff members do not have the required technical
-skills demanded by the project and must spend time to learn them. One or
-more members of the staff are seriously ill or incapable of working.
+\begin{longtable}[c]{@{}ll@{}}
+\toprule\addlinespace
+\begin{minipage}[t]{0.47\columnwidth}\raggedright
+Risk Type
+\end{minipage} & \begin{minipage}[t]{0.47\columnwidth}\raggedright
+Possible Risks
+\end{minipage}
+\\\addlinespace
+\begin{minipage}[t]{0.47\columnwidth}\raggedright
+Technology
+\end{minipage} & \begin{minipage}[t]{0.47\columnwidth}\raggedright
+The maximum number of queries allowed on EchoNest is reached during
+testing.
+
+The server that is hosting the domain goes down.
+
+The website traffic is overloaded, causing a crash.
+
+The real-time performance of the software is inadequate.
+\end{minipage}
+\\\addlinespace
+\begin{minipage}[t]{0.47\columnwidth}\raggedright
+People
+\end{minipage} & \begin{minipage}[t]{0.47\columnwidth}\raggedright
+Staff members do not have the required technical skills demanded by the
+project and must spend time to learn them.
+
+One or more members of the staff are seriously ill or incapable of
+working.
+
 Staff members who lack experience are unable to learn quick enough to
-meet deadlines. Organisational One or more new staff members are added
-to the development team. One or more of the current staff members quits.
+meet deadlines.
+\end{minipage}
+\\\addlinespace
+\begin{minipage}[t]{0.47\columnwidth}\raggedright
+Organisational
+\end{minipage} & \begin{minipage}[t]{0.47\columnwidth}\raggedright
+One or more new staff members are added to the development team.
+
+One or more of the current staff members quits.
+
 A flat organization produces a lack of accountability and confusion,
-resulting in delayed deliverables. The waterfall method is ineffective
-due to changing customer demands and uncertainties. Metrics The metrics
-are not completely objective Tools The chosen CASE tools cannot be
-integrated into the software without serious restructuring. Requirements
+resulting in delayed deliverables.
+
+The waterfall method is ineffective due to changing customer demands and
+uncertainties.
+\end{minipage}
+\\\addlinespace
+\begin{minipage}[t]{0.47\columnwidth}\raggedright
+Metrics
+\end{minipage} & \begin{minipage}[t]{0.47\columnwidth}\raggedright
+The metrics are not completely objective
+\end{minipage}
+\\\addlinespace
+\begin{minipage}[t]{0.47\columnwidth}\raggedright
+Tools
+\end{minipage} & \begin{minipage}[t]{0.47\columnwidth}\raggedright
+The chosen CASE tools cannot be integrated into the software without
+serious restructuring.
+\end{minipage}
+\\\addlinespace
+\begin{minipage}[t]{0.47\columnwidth}\raggedright
+Requirements
+\end{minipage} & \begin{minipage}[t]{0.47\columnwidth}\raggedright
 The client and stakeholder want to alter small details of the product.
+
 The client and stakeholder want to restructure the product entirely.
+
 Requirements from the client are misinterpreted during implementation.
+
 The development team implements features that looks aesthetically
-pleasing, but is unwanted by the client. Estimation The software takes
-longer to develop than previously anticipated. The number of people
-using the software is greater than what was previously decided by the
-client and stakeholder.
+pleasing, but is unwanted by the client.
+\end{minipage}
+\\\addlinespace
+\begin{minipage}[t]{0.47\columnwidth}\raggedright
+Estimation
+\end{minipage} & \begin{minipage}[t]{0.47\columnwidth}\raggedright
+The software takes longer to develop than previously anticipated.
+
+The number of ~people using the software is greater than what was
+previously decided by the client and stakeholder.
+\end{minipage}
+\\\addlinespace
+\bottomrule
+\end{longtable}
 
 \subsection{6.2 Risk Analysis}\label{risk-analysis}
 
-SEE TABLE No. Risk Probability Effects 1 The maximum number of queries
-allowed on EchoNest is reached during testing. Very Low Catastrophic 2
-The server that is hosting the domain crashes. Low Serious 3 The website
-traffic is overloaded, causing a crash. Very Low Serious 4 Staff members
-do not have the required technical skills demanded by the project and
-must spend time to learn them. Moderate Tolerable 5 One or more members
-of the staff are seriously ill or incapable of working. Low Serious 6
+\begin{longtable}[c]{@{}llll@{}}
+\toprule\addlinespace
+\begin{minipage}[t]{0.22\columnwidth}\raggedright
+No.
+\end{minipage} & \begin{minipage}[t]{0.22\columnwidth}\raggedright
+Risk
+\end{minipage} & \begin{minipage}[t]{0.22\columnwidth}\raggedright
+Probability
+\end{minipage} & \begin{minipage}[t]{0.22\columnwidth}\raggedright
+Effects
+\end{minipage}
+\\\addlinespace
+\begin{minipage}[t]{0.22\columnwidth}\raggedright
+1
+\end{minipage} & \begin{minipage}[t]{0.22\columnwidth}\raggedright
+The maximum number of queries allowed on EchoNest is reached during
+testing.
+\end{minipage} & \begin{minipage}[t]{0.22\columnwidth}\raggedright
+Very Low
+\end{minipage} & \begin{minipage}[t]{0.22\columnwidth}\raggedright
+Catastrophic
+\end{minipage}
+\\\addlinespace
+\begin{minipage}[t]{0.22\columnwidth}\raggedright
+2
+\end{minipage} & \begin{minipage}[t]{0.22\columnwidth}\raggedright
+The server that is hosting the domain crashes.
+\end{minipage} & \begin{minipage}[t]{0.22\columnwidth}\raggedright
+Low
+\end{minipage} & \begin{minipage}[t]{0.22\columnwidth}\raggedright
+Serious
+\end{minipage}
+\\\addlinespace
+\begin{minipage}[t]{0.22\columnwidth}\raggedright
+3
+\end{minipage} & \begin{minipage}[t]{0.22\columnwidth}\raggedright
+The website traffic is overloaded, causing a crash.
+\end{minipage} & \begin{minipage}[t]{0.22\columnwidth}\raggedright
+Very Low
+\end{minipage} & \begin{minipage}[t]{0.22\columnwidth}\raggedright
+Serious
+\end{minipage}
+\\\addlinespace
+\begin{minipage}[t]{0.22\columnwidth}\raggedright
+4
+\end{minipage} & \begin{minipage}[t]{0.22\columnwidth}\raggedright
+Staff members do not have the required technical skills demanded by the
+project and must spend time to learn them.
+\end{minipage} & \begin{minipage}[t]{0.22\columnwidth}\raggedright
+Moderate
+\end{minipage} & \begin{minipage}[t]{0.22\columnwidth}\raggedright
+Tolerable
+\end{minipage}
+\\\addlinespace
+\begin{minipage}[t]{0.22\columnwidth}\raggedright
+5
+\end{minipage} & \begin{minipage}[t]{0.22\columnwidth}\raggedright
+One or more members of the staff are seriously ill or incapable of
+working.
+\end{minipage} & \begin{minipage}[t]{0.22\columnwidth}\raggedright
+Low
+\end{minipage} & \begin{minipage}[t]{0.22\columnwidth}\raggedright
+Serious
+\end{minipage}
+\\\addlinespace
+\begin{minipage}[t]{0.22\columnwidth}\raggedright
+6
+\end{minipage} & \begin{minipage}[t]{0.22\columnwidth}\raggedright
 Staff members who lack experience are unable to learn quick enough to
-meet deadlines. Low Serious 7 One or more new staff members are added to
-the development team. Low Insignificant 8 One or more of the current
-staff members quits. Low Tolerable 9 The chosen CASE tools cannot be
-integrated into the software without serious restructuring. Moderate
-Tolerable 10 The client and stakeholder request to alter small details
-of the product. High Tolerable 11 The client and stakeholder want to
-restructure the product entirely. Moderate Catastrophic 12 The software
-takes longer to develop than previously anticipated. High Tolerable 13
+meet deadlines.
+\end{minipage} & \begin{minipage}[t]{0.22\columnwidth}\raggedright
+Low
+\end{minipage} & \begin{minipage}[t]{0.22\columnwidth}\raggedright
+Serious
+\end{minipage}
+\\\addlinespace
+\begin{minipage}[t]{0.22\columnwidth}\raggedright
+7
+\end{minipage} & \begin{minipage}[t]{0.22\columnwidth}\raggedright
+One or more new staff members are added to the development team.
+\end{minipage} & \begin{minipage}[t]{0.22\columnwidth}\raggedright
+Low
+\end{minipage} & \begin{minipage}[t]{0.22\columnwidth}\raggedright
+Insignificant
+\end{minipage}
+\\\addlinespace
+\begin{minipage}[t]{0.22\columnwidth}\raggedright
+8
+\end{minipage} & \begin{minipage}[t]{0.22\columnwidth}\raggedright
+One or more of the current staff members quits.
+\end{minipage} & \begin{minipage}[t]{0.22\columnwidth}\raggedright
+Low
+\end{minipage} & \begin{minipage}[t]{0.22\columnwidth}\raggedright
+Tolerable
+\end{minipage}
+\\\addlinespace
+\begin{minipage}[t]{0.22\columnwidth}\raggedright
+9
+\end{minipage} & \begin{minipage}[t]{0.22\columnwidth}\raggedright
+The chosen CASE tools cannot be integrated into the software without
+serious restructuring.
+\end{minipage} & \begin{minipage}[t]{0.22\columnwidth}\raggedright
+Moderate
+\end{minipage} & \begin{minipage}[t]{0.22\columnwidth}\raggedright
+Tolerable
+\end{minipage}
+\\\addlinespace
+\begin{minipage}[t]{0.22\columnwidth}\raggedright
+10
+\end{minipage} & \begin{minipage}[t]{0.22\columnwidth}\raggedright
+The client and stakeholder request to alter small details of the
+product.
+\end{minipage} & \begin{minipage}[t]{0.22\columnwidth}\raggedright
+High
+\end{minipage} & \begin{minipage}[t]{0.22\columnwidth}\raggedright
+Tolerable
+\end{minipage}
+\\\addlinespace
+\begin{minipage}[t]{0.22\columnwidth}\raggedright
+11
+\end{minipage} & \begin{minipage}[t]{0.22\columnwidth}\raggedright
+The client and stakeholder want to restructure the product entirely.
+\end{minipage} & \begin{minipage}[t]{0.22\columnwidth}\raggedright
+Moderate
+\end{minipage} & \begin{minipage}[t]{0.22\columnwidth}\raggedright
+Catastrophic
+\end{minipage}
+\\\addlinespace
+\begin{minipage}[t]{0.22\columnwidth}\raggedright
+12
+\end{minipage} & \begin{minipage}[t]{0.22\columnwidth}\raggedright
+The software takes longer to develop than previously anticipated.
+\end{minipage} & \begin{minipage}[t]{0.22\columnwidth}\raggedright
+High
+\end{minipage} & \begin{minipage}[t]{0.22\columnwidth}\raggedright
+Tolerable
+\end{minipage}
+\\\addlinespace
+\begin{minipage}[t]{0.22\columnwidth}\raggedright
+13
+\end{minipage} & \begin{minipage}[t]{0.22\columnwidth}\raggedright
 The number of users is greater than what was previously decided by the
-client and stakeholder. Moderate Tolerable 14 A flat organization
-produces a lack of accountability and confusion, resulting in delayed
-deliverables. Moderate Serious 15 The waterfall method is ineffective
-due to changing customer demands and uncertainties. Moderate Tolerable
-16 The real-time performance of the software is inadequate. Moderate
-Serious 17 Requirements from the client are misinterpreted during
-implementation. High Tolerable 18 The development team implements
-features that looks aesthetically pleasing, but is unwanted by the
-client. Moderate Tolerable 19 Objectibility of custom metric to track
-progress of project is low Moderate Tolerable
-
+client and stakeholder.
+\end{minipage} & \begin{minipage}[t]{0.22\columnwidth}\raggedright
+Moderate
+\end{minipage} & \begin{minipage}[t]{0.22\columnwidth}\raggedright
+Tolerable
+\end{minipage}
+\\\addlinespace
+\begin{minipage}[t]{0.22\columnwidth}\raggedright
+14
+\end{minipage} & \begin{minipage}[t]{0.22\columnwidth}\raggedright
+A flat organization produces a lack of accountability and confusion,
+resulting in delayed deliverables.
+\end{minipage} & \begin{minipage}[t]{0.22\columnwidth}\raggedright
+Moderate
+\end{minipage} & \begin{minipage}[t]{0.22\columnwidth}\raggedright
+Serious
+\end{minipage}
+\\\addlinespace
+\begin{minipage}[t]{0.22\columnwidth}\raggedright
+15
+\end{minipage} & \begin{minipage}[t]{0.22\columnwidth}\raggedright
+The waterfall method is ineffective due to changing customer demands and
+uncertainties.
+\end{minipage} & \begin{minipage}[t]{0.22\columnwidth}\raggedright
+Moderate
+\end{minipage} & \begin{minipage}[t]{0.22\columnwidth}\raggedright
+Tolerable
+\end{minipage}
+\\\addlinespace
+\begin{minipage}[t]{0.22\columnwidth}\raggedright
+16
+\end{minipage} & \begin{minipage}[t]{0.22\columnwidth}\raggedright
+The real-time performance of the software is inadequate.
+\end{minipage} & \begin{minipage}[t]{0.22\columnwidth}\raggedright
+Moderate
+\end{minipage} & \begin{minipage}[t]{0.22\columnwidth}\raggedright
+Serious
+\end{minipage}
+\\\addlinespace
+\begin{minipage}[t]{0.22\columnwidth}\raggedright
+17
+\end{minipage} & \begin{minipage}[t]{0.22\columnwidth}\raggedright
+Requirements from the client are misinterpreted during implementation.
+\end{minipage} & \begin{minipage}[t]{0.22\columnwidth}\raggedright
+High
+\end{minipage} & \begin{minipage}[t]{0.22\columnwidth}\raggedright
+Tolerable
+\end{minipage}
+\\\addlinespace
+\begin{minipage}[t]{0.22\columnwidth}\raggedright
+18
+\end{minipage} & \begin{minipage}[t]{0.22\columnwidth}\raggedright
+The development team implements features that looks aesthetically
+pleasing, but is unwanted by the client.
+\end{minipage} & \begin{minipage}[t]{0.22\columnwidth}\raggedright
+Moderate
+\end{minipage} & \begin{minipage}[t]{0.22\columnwidth}\raggedright
+Tolerable
+\end{minipage}
+\\\addlinespace
+\begin{minipage}[t]{0.22\columnwidth}\raggedright
+19
+\end{minipage} & \begin{minipage}[t]{0.22\columnwidth}\raggedright
+Objectibility of custom metric to track progress of project is low
+\end{minipage} & \begin{minipage}[t]{0.22\columnwidth}\raggedright
+Moderate
+\end{minipage} & \begin{minipage}[t]{0.22\columnwidth}\raggedright
+Tolerable
+\end{minipage}
+\\\addlinespace
+\bottomrule
+\end{longtable}
 \subsection{6.3 Risk Planning}\label{risk-planning}
 
-SEE TABLE Risk No. Strategy Type Solution 1 Avoidance Make smarter test
-cases that cover more areas of vulnerability in a smaller amount of API
-queries. 2 Avoidance Host the software on a reliable server, or perhaps
-change the hosting location based off of previous crashing problems.. 3
-Avoidance Select a more robust hosting service. 4 Contingency Plan
+\begin{longtable}[c]{@{}lll@{}}
+\toprule\addlinespace
+\begin{minipage}[t]{0.30\columnwidth}\raggedright
+Risk No.
+\end{minipage} & \begin{minipage}[t]{0.30\columnwidth}\raggedright
+Strategy Type
+\end{minipage} & \begin{minipage}[t]{0.30\columnwidth}\raggedright
+Solution
+\end{minipage}
+\\\addlinespace
+\begin{minipage}[t]{0.30\columnwidth}\raggedright
+1
+\end{minipage} & \begin{minipage}[t]{0.30\columnwidth}\raggedright
+Avoidance
+\end{minipage} & \begin{minipage}[t]{0.30\columnwidth}\raggedright
+Make smarter test cases that cover more areas of vulnerability in a
+smaller amount of API queries.
+\end{minipage}
+\\\addlinespace
+\begin{minipage}[t]{0.30\columnwidth}\raggedright
+2
+\end{minipage} & \begin{minipage}[t]{0.30\columnwidth}\raggedright
+Avoidance
+\end{minipage} & \begin{minipage}[t]{0.30\columnwidth}\raggedright
+Host the software on a reliable server, or perhaps change the hosting
+location based off of previous crashing problems..
+\end{minipage}
+\\\addlinespace
+\begin{minipage}[t]{0.30\columnwidth}\raggedright
+3
+\end{minipage} & \begin{minipage}[t]{0.30\columnwidth}\raggedright
+Avoidance
+\end{minipage} & \begin{minipage}[t]{0.30\columnwidth}\raggedright
+Select a more robust hosting service.
+\end{minipage}
+\\\addlinespace
+\begin{minipage}[t]{0.30\columnwidth}\raggedright
+4
+\end{minipage} & \begin{minipage}[t]{0.30\columnwidth}\raggedright
+Contingency Plan
+\end{minipage} & \begin{minipage}[t]{0.30\columnwidth}\raggedright
 Allocate staff members to develop parts of the project that best suits
 their skills. If no one is familiar with the language or practices
-required, work in teams of two to promote collaboration 5 Contingency
-Plan Assign the tasks of the ill staff member to various other members,
-while the ill staff member can update the new members on the current
-state of the task. 6 Contingency Plan Delay the deliverable output, or
-submit the incomplete deliverable and patch the mistakes later when
-given more time. 7 Minimisation Update the new staff member with the
-current state of the software and introduce low level tasks to help get
-him or her up to speed. 8 Minimisation Allocate the work of the quitting
-staff member among the remaining team members. 9 Contingency Plan Find
-new tools to fill the needs of the software. 10 Contingency Plan Update
-previous documents with the new information and fill out a revision
-history of each document. Change the code to fit the demands and,
-depending on the magnitude of the desired changes, restructuring of the
-software may be necessary. 11 Contingency Plan Depending on the amount
-of change desired by the client, the staff may have to create new
-documents entirely and essentially start a new project. 12 Contingency
-Plan Change the deliverable dates to compensate for a new estimated time
-using COCOMO. 13 Minimisation To compensate for more users than
-previously intended, the software may have to be altered to more
-effectively handle storage, the EchoNest API licensing may have to be
-purchased to allow more requests, and the server will need to be able to
-handle more requests. 14 Minimisation Hold team members more accountable
-for his or her own tasks. Part of this can be achieved by instilling a
-productive atmosphere during meetings and other official work times. If
-there continues to be problems with a flat organization, a hierarchy may
-need to be introduced to inspire more efficient work. 15 Contingency
-Plan The development team will have to work around the inefficiencies of
-the waterfall method. Switching to Agile methodology is not an option.
-16 Avoidance The development team will need to structure the code in a
-way that produces results in the quickest way possible. If it is too
-slow, restructuring may be required. Caching results is one way to speed
-up results. 17 Avoidance If the requirements specified by the client is
-different than what is implemented, the development team will have to
-fix the unwanted components. This can be avoided by following the
-requirements document closely, assuming the client specified everything
-during the formation of the requirements document. 18 Avoidance The
-development team should follow the requirements document regardless of
-the opinions of the team on the specifications of components.
+required, work in teams of two to promote collaboration
+\end{minipage}
+\\\addlinespace
+\begin{minipage}[t]{0.30\columnwidth}\raggedright
+5
+\end{minipage} & \begin{minipage}[t]{0.30\columnwidth}\raggedright
+Contingency Plan
+\end{minipage} & \begin{minipage}[t]{0.30\columnwidth}\raggedright
+Assign the tasks of the ill staff member to various other members, while
+the ill staff member can update the new members on the current state of
+the task.
+\end{minipage}
+\\\addlinespace
+\begin{minipage}[t]{0.30\columnwidth}\raggedright
+6
+\end{minipage} & \begin{minipage}[t]{0.30\columnwidth}\raggedright
+Contingency Plan
+\end{minipage} & \begin{minipage}[t]{0.30\columnwidth}\raggedright
+Delay the deliverable output, or submit the incomplete deliverable and
+patch the mistakes later when given more time.
+\end{minipage}
+\\\addlinespace
+\begin{minipage}[t]{0.30\columnwidth}\raggedright
+7
+\end{minipage} & \begin{minipage}[t]{0.30\columnwidth}\raggedright
+Minimisation
+\end{minipage} & \begin{minipage}[t]{0.30\columnwidth}\raggedright
+Update the new staff member with the current state of the software and
+introduce low level tasks to help get him or her up to speed.
+\end{minipage}
+\\\addlinespace
+\begin{minipage}[t]{0.30\columnwidth}\raggedright
+8
+\end{minipage} & \begin{minipage}[t]{0.30\columnwidth}\raggedright
+Minimisation
+\end{minipage} & \begin{minipage}[t]{0.30\columnwidth}\raggedright
+Allocate the work of the quitting staff member among the remaining team
+members.
+\end{minipage}
+\\\addlinespace
+\begin{minipage}[t]{0.30\columnwidth}\raggedright
+9
+\end{minipage} & \begin{minipage}[t]{0.30\columnwidth}\raggedright
+Contingency Plan
+\end{minipage} & \begin{minipage}[t]{0.30\columnwidth}\raggedright
+Find new tools to fill the needs of the software.
+\end{minipage}
+\\\addlinespace
+\begin{minipage}[t]{0.30\columnwidth}\raggedright
+10
+\end{minipage} & \begin{minipage}[t]{0.30\columnwidth}\raggedright
+Contingency Plan
+\end{minipage} & \begin{minipage}[t]{0.30\columnwidth}\raggedright
+Update previous documents with the new information and fill out a
+revision history of each document. Change the code to fit the demands
+and, depending on the magnitude of the desired changes, restructuring of
+the software may be necessary.
+\end{minipage}
+\\\addlinespace
+\begin{minipage}[t]{0.30\columnwidth}\raggedright
+11
+\end{minipage} & \begin{minipage}[t]{0.30\columnwidth}\raggedright
+Contingency Plan
+\end{minipage} & \begin{minipage}[t]{0.30\columnwidth}\raggedright
+Depending on the amount of change desired by the client, the staff may
+have to create new documents entirely and essentially start a new
+project.
+\end{minipage}
+\\\addlinespace
+\begin{minipage}[t]{0.30\columnwidth}\raggedright
+12
+\end{minipage} & \begin{minipage}[t]{0.30\columnwidth}\raggedright
+Contingency Plan
+\end{minipage} & \begin{minipage}[t]{0.30\columnwidth}\raggedright
+Change the deliverable dates to compensate for a new estimated time
+using COCOMO.
+\end{minipage}
+\\\addlinespace
+\begin{minipage}[t]{0.30\columnwidth}\raggedright
+13
+\end{minipage} & \begin{minipage}[t]{0.30\columnwidth}\raggedright
+Minimisation
+\end{minipage} & \begin{minipage}[t]{0.30\columnwidth}\raggedright
+To compensate for more users than previously intended, the software may
+have to be altered to more effectively handle storage, the EchoNest API
+licensing may have to be purchased to allow more requests, and the
+server will need to be able to handle more requests.
+\end{minipage}
+\\\addlinespace
+\begin{minipage}[t]{0.30\columnwidth}\raggedright
+14
+\end{minipage} & \begin{minipage}[t]{0.30\columnwidth}\raggedright
+Minimisation
+\end{minipage} & \begin{minipage}[t]{0.30\columnwidth}\raggedright
+Hold team members more accountable for his or her own tasks. Part of
+this can be achieved by instilling a productive atmosphere during
+meetings and other official work times. If there continues to be
+problems with a flat organization, a hierarchy may need to be introduced
+to inspire more efficient work.
+\end{minipage}
+\\\addlinespace
+\begin{minipage}[t]{0.30\columnwidth}\raggedright
+15
+\end{minipage} & \begin{minipage}[t]{0.30\columnwidth}\raggedright
+Contingency Plan
+\end{minipage} & \begin{minipage}[t]{0.30\columnwidth}\raggedright
+The development team will have to work around the inefficiencies of the
+waterfall method. Switching to Agile methodology is not an option.
+\end{minipage}
+\\\addlinespace
+\begin{minipage}[t]{0.30\columnwidth}\raggedright
+16
+\end{minipage} & \begin{minipage}[t]{0.30\columnwidth}\raggedright
+Avoidance
+\end{minipage} & \begin{minipage}[t]{0.30\columnwidth}\raggedright
+The development team will need to structure the code in a way that
+produces results in the quickest way possible. If it is too slow,
+restructuring may be required. Caching results is one way to speed up
+results.
+\end{minipage}
+\\\addlinespace
+\begin{minipage}[t]{0.30\columnwidth}\raggedright
+17
+\end{minipage} & \begin{minipage}[t]{0.30\columnwidth}\raggedright
+Avoidance
+\end{minipage} & \begin{minipage}[t]{0.30\columnwidth}\raggedright
+If the requirements specified by the client is different than what is
+implemented, the development team will have to fix the unwanted
+components. This can be avoided by following the requirements document
+closely, assuming the client specified everything during the formation
+of the requirements document.
+\end{minipage}
+\\\addlinespace
+\begin{minipage}[t]{0.30\columnwidth}\raggedright
+18
+\end{minipage} & \begin{minipage}[t]{0.30\columnwidth}\raggedright
+Avoidance
+\end{minipage} & \begin{minipage}[t]{0.30\columnwidth}\raggedright
+The development team should follow the requirements document regardless
+of the opinions of the team on the specifications of components.
+\end{minipage}
+\\\addlinespace
+\bottomrule
+\end{longtable}
 
 \subsection{6.4 Risk Monitoring}\label{risk-monitoring}
 
@@ -742,4 +1430,87 @@ anticipated, therefore these risks can be ignored during team meetings.
 Larger risks for a particular milestone or deliverable can be noted in
 the github issue tracker along with the regular team meeting procedure.
 
+\section{7. Appendices}\label{appendices}
+
+\subsection{A.1: Appendix 1: Meetings with
+Customer}\label{a.1-appendix-1-meetings-with-customer}
+
+\subsubsection{Change to Requirements}\label{change-to-requirements}
+
+\begin{itemize}
+\itemsep1pt\parskip0pt\parsep0pt
+\item
+  On February 5, 2015, the client indicated a change in the text color
+  preferences for the WC. Before, the client required the text color of
+  the WC to be black. Now, there should be different, randomly assigned
+  colors for each word.
+\end{itemize}
+
+\subsubsection{Added Details}\label{added-details}
+
+\begin{itemize}
+\itemsep1pt\parskip0pt\parsep0pt
+\item
+  Search bar should be user friendly, user should be able to leave out
+  common words and still get an accurate suggestion.
+\item
+  Search bar should have some sort of direction for the user as to how
+  he/she should proceed
+\end{itemize}
+
+\subsection{A.2: Appendix 2: Metric and
+Measurement}\label{a.2-appendix-2-metric-and-measurement}
+
+$$
+$$
+
+
+\subsection{A.3: Appendix 3: COCOMO
+Details}\label{a.3-appendix-3-cocomo-details}
+
+We used the COCOMO II model for estimating the work required to complete
+our project because it is an effective standard formula that takes
+initial assumptions and makes a useful projection from them. Although
+the cost drivers operate based on assumed levels, we feel that the
+calculation takes several important factors into account, making up for
+any subjectivity. The individual assumptions for why we chose certain
+levels for each driver is listed in section 3.3. We also made an
+assumption for the KSLOC, estimating that our project will reach about
+1,000 source lines of code. We are assuming that the project will be
+rather small compared to industry software projects since the website
+does not need to be excessively robust in design and functionality.
+
+\subsubsection{Formula}\label{formula}
+
+\[
+E(person-months) = b \cdot KLOC^c
+\] (our estimation for KLOC approx = 1)
+
+\subsection{A.4: Appendix 4: Resumes}\label{a.4-appendix-4-resumes}
+\includegraphics{justine.pdf}
+\pagebreak
+
+\pagebreak
+
+\includegraphics{kelsey.pdf}
+\pagebreak
+
+\pagebreak
+
+\includegraphics{mark.pdf}
+\pagebreak
+
+\pagebreak
+
+\includegraphics{milad.pdf}
+\pagebreak
+
+\pagebreak
+
+\includegraphics{jeff.pdf}
+\pagebreak
+
+\pagebreak
+
+\includegraphics{seb.pdf}
 \end{document}
