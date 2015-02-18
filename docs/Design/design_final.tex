@@ -79,12 +79,14 @@
 
 \begin{document}
 
-\maketitle
+\clearpage\maketitle
+\thispagestyle{empty}
 
 \pagebreak
 
 \tableofcontents
 \setcounter{tocdepth}{3}
+\thispagestyle{empty}
 
 \pagebreak
 
@@ -379,8 +381,91 @@ page by clicking on a word in the Word Cloud on the Home page.
 Submit Button
 \end{minipage} & \begin{minipage}[t]{0.47\columnwidth}\raggedright
 The button adjacent to the Search Bar. When the user enters an artist
-name into the Search Bar and is ready to generate the Word Cloud, he or
-she must click on the Submit Button to begin the process.
+name into the Search Bar and is ready to generate the Word Cloud, he or she must click on the Submit Button to begin the process.
+\end{minipage}
+\\\addlinespace
+\begin{minipage}[t]{0.47\columnwidth}\raggedright
+add\_to\_cloud
+\end{minipage} & \begin{minipage}[t]{0.47\columnwidth}\raggedright
+a boolean variable that represents if the user has pressed the Add to Cloud Button
+\end{minipage}
+\\\addlinespace
+\begin{minipage}[t]{0.47\columnwidth}\raggedright
+back\_to\_cloud
+\end{minipage} & \begin{minipage}[t]{0.47\columnwidth}\raggedright
+a boolean variable that represents if the user has pressed the Back to Cloud Button
+\end{minipage}
+\\\addlinespace
+\begin{minipage}[t]{0.47\columnwidth}\raggedright
+back\_to\_songs
+\end{minipage} & \begin{minipage}[t]{0.47\columnwidth}\raggedright
+a boolean variable that represents if the user has pressed the Back to Songs Button
+\end{minipage}
+\\\addlinespace
+\begin{minipage}[t]{0.47\columnwidth}\raggedright
+click\_word
+\end{minipage} & \begin{minipage}[t]{0.47\columnwidth}\raggedright
+a boolean variable that represents if the user has clicked a word in the WC
+\end{minipage}
+\\\addlinespace
+\begin{minipage}[t]{0.47\columnwidth}\raggedright
+Error Message Visualization State
+\end{minipage} & \begin{minipage}[t]{0.47\columnwidth}\raggedright
+represents when the user enters an invalid artist name in the Search Bar and presses the Submit Button, causing an error message to appear
+\end{minipage}
+\\\addlinespace
+\begin{minipage}[t]{0.47\columnwidth}\raggedright
+Home State
+\end{minipage} & \begin{minipage}[t]{0.47\columnwidth}\raggedright
+represents when the user first accesses C-Lyrics before a WC is generated on the Home Page
+\end{minipage}
+\\\addlinespace
+\begin{minipage}[t]{0.47\columnwidth}\raggedright
+Lyrics State
+\end{minipage} & \begin{minipage}[t]{0.47\columnwidth}\raggedright
+represents the lyrics of the song that was selected in the Songs Page state and the user being on the Lyrics Page
+\end{minipage}
+\\\addlinespace
+\begin{minipage}[t]{0.47\columnwidth}\raggedright
+searchbar\_Text
+\end{minipage} & \begin{minipage}[t]{0.47\columnwidth}\raggedright
+the user's input in the search bar which is limited to alphanumerical characters
+\end{minipage}
+\\\addlinespace
+\begin{minipage}[t]{0.47\columnwidth}\raggedright
+select\_song
+\end{minipage} & \begin{minipage}[t]{0.47\columnwidth}\raggedright
+a boolean variable that represents if the user has selected a song from the Songs List Page
+\end{minipage}
+\\\addlinespace
+\begin{minipage}[t]{0.47\columnwidth}\raggedright
+share
+\end{minipage} & \begin{minipage}[t]{0.47\columnwidth}\raggedright
+a boolean variable that represents if the user has pressed the Share button
+\end{minipage}
+\\\addlinespace
+\begin{minipage}[t]{0.47\columnwidth}\raggedright
+Song State
+\end{minipage} & \begin{minipage}[t]{0.47\columnwidth}\raggedright
+represents the user selecting a word from the WC and being on the Songs Page
+\end{minipage}
+\\\addlinespace
+\begin{minipage}[t]{0.47\columnwidth}\raggedright
+submit
+\end{minipage} & \begin{minipage}[t]{0.47\columnwidth}\raggedright
+a boolean variable that represents if the user has pressed the Submit Button
+\end{minipage}
+\\\addlinespace
+\begin{minipage}[t]{0.47\columnwidth}\raggedright
+type\_artist
+\end{minipage} & \begin{minipage}[t]{0.47\columnwidth}\raggedright
+a boolean variable that represents if the user typed in a valid artist name to the Search Bar
+\end{minipage}
+\\\addlinespace
+\begin{minipage}[t]{0.47\columnwidth}\raggedright
+Word Cloud Visualization State
+\end{minipage} & \begin{minipage}[t]{0.47\columnwidth}\raggedright
+represents when the user is on the Home Page and a WC is displayed
 \end{minipage}
 \\\addlinespace
 \begin{minipage}[t]{0.47\columnwidth}\raggedright
@@ -493,7 +578,7 @@ Diagram}\label{client-side-class-diagram}
 
 \begin{figure}[htbp]
 \centering
-\includegraphics{js_class_design.png}
+\includegraphics[width=20cm,height=20cm,keepaspectratio]{js_class_design.png}
 \caption{Client Side Class Diagram}
 \end{figure}
 

@@ -76,7 +76,7 @@
 \title{%
 	C-lyrics - A Word Cloud for Lyrics \\
 	\large Software Project Management Plan}
-    
+
 \begin{document}
 
 \maketitle
@@ -90,9 +90,9 @@
 
 \section{Executive Summary}\label{executive-summary}
 
-C-lyrics is a public website that will generate a word cloud for any given artist based on the 250 most frequently used words that appear across all of the artist’s published songs. This product will interface with the EchoNest API which will serve as the database from which we find and analyze the songs. By clicking on a specific word in the word cloud the user can see a list of all of the songs that word appears in and how frequently it occurs in each song. Furthermore, the user can click on any listed song title to see the complete lyrics for that song with the original word selected from the word cloud highlighted every time it appears. 
+C-lyrics is a public website that will generate a word cloud for any given artist based on the 250 most frequently used words that appear across all of the artist’s published songs. This product will interface with the EchoNest API which will serve as the database from which we find and analyze the songs. By clicking on a specific word in the word cloud the user can see a list of all of the songs that word appears in and how frequently it occurs in each song. Furthermore, the user can click on any listed song title to see the complete lyrics for that song with the original word selected from the word cloud highlighted every time it appears.
 
-C-lyrics is intended for use by the general public. There will be no login required and there is no stored history of previous searches. Because of this we will have very low memory requirements and can run the product off of one server. The user can access C-lyrics using any device running any OS. After typing in the artist name and selecting the submit button, the word cloud will be generated in approximately one second and will be able to be shared via Facebook. 
+C-lyrics is intended for use by the general public. There will be no login required and there is no stored history of previous searches. Because of this we will have very low memory requirements and can run the product off of one server. The user can access C-lyrics using any device running any OS. After typing in the artist name and selecting the submit button, the word cloud will be generated in approximately one second and will be able to be shared via Facebook.
 
 \pagebreak
 
@@ -1471,7 +1471,7 @@ $$
 \forall i, j \in members, i \not= j :
 $$
 $$
-g_{i, j} = 
+g_{i, j} =
 \begin{cases}
 1 &  Very\ Late \\
 2 & Sligthly\ Late \\
@@ -1493,7 +1493,7 @@ score_{grade} = \frac{\sum_{i \in members} g_{i, avg}}{|members|}
 $$
 
 $$
-score_{team} = 100 \cdot \frac{score_{grade}}{3} 
+score_{team} = 100 \cdot \frac{score_{grade}}{3}
 $$
 
 We then proceed to obtaining the same kind of score for the code coverage. This score is influenced by the percentage of current coverage and the percentage of passing tests.
@@ -1508,7 +1508,7 @@ $$
 score = \frac{w_{coverage} \cdot score_{coverage} + w_{team} \cdot score_{team}}{2}
 $$
 $$
-measurment = 
+measurment =
 \begin{cases}
 On\ Time &  score \geq threshold_{team} \\
 Late & Otherwise \\
