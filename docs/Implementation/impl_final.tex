@@ -1,0 +1,810 @@
+\documentclass[]{article}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage{amssymb,amsmath}
+\usepackage{ifxetex,ifluatex}
+\usepackage{fixltx2e} % provides \textsubscript
+% use upquote if available, for straight quotes in verbatim environments
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+\ifnum 0\ifxetex 1\fi\ifluatex 1\fi=0 % if pdftex
+  \usepackage[utf8]{inputenc}
+\else % if luatex or xelatex
+  \ifxetex
+    \usepackage{mathspec}
+    \usepackage{xltxtra,xunicode}
+  \else
+    \usepackage{fontspec}
+  \fi
+  \defaultfontfeatures{Mapping=tex-text,Scale=MatchLowercase}
+  \newcommand{\euro}{€}
+\fi
+% use microtype if available
+\IfFileExists{microtype.sty}{\usepackage{microtype}}{}
+\usepackage{longtable,booktabs}
+\usepackage{graphicx}
+% Redefine \includegraphics so that, unless explicit options are
+% given, the image width will not exceed the width of the page.
+% Images get their normal width if they fit onto the page, but
+% are scaled down if they would overflow the margins.
+\makeatletter
+\def\ScaleIfNeeded{%
+  \ifdim\Gin@nat@width>\linewidth
+    \linewidth
+  \else
+    \Gin@nat@width
+  \fi
+}
+\makeatother
+\let\Oldincludegraphics\includegraphics
+{%
+ \catcode`\@=11\relax%
+ \gdef\includegraphics{\@ifnextchar[{\Oldincludegraphics}{\Oldincludegraphics[width=\ScaleIfNeeded]}}%
+}%
+\ifxetex
+  \usepackage[setpagesize=false, % page size defined by xetex
+              unicode=false, % unicode breaks when used with xetex
+              xetex]{hyperref}
+\else
+  \usepackage[unicode=true]{hyperref}
+\fi
+\hypersetup{breaklinks=true,
+            bookmarks=true,
+            pdfauthor={},
+            pdftitle={},
+            colorlinks=true,
+            citecolor=blue,
+            urlcolor=blue,
+            linkcolor=magenta,
+            pdfborder={0 0 0}}
+\urlstyle{same}  % don't use monospace font for urls
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{6pt plus 2pt minus 1pt}
+\setlength{\emergencystretch}{3em}  % prevent overfull lines
+\setcounter{secnumdepth}{0}
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\lhead{C-Lyrics - A Word Cloud for Lyrics}
+\rhead{\thepage}
+\cfoot{Team 6}
+\renewcommand{\headrulewidth}{0.4pt}
+\renewcommand{\footrulewidth}{0.4pt}
+
+\title{Clyrics - A Word Cloud for Lyrics}
+\author{Justine Cocchi\\jcocchi@usc.edu \and Kelsey Fargas\\kfargas@usc.edu \and Mark Krant \\ mkrant@usc.edu\and Milad Gueramian\\gueramia@usc.edu \and Jeff Kang\\kangjr@usc.edu \and Séb Arnold\\arnolds@usc.edu}
+\date{2 March 2015}
+
+\title{%
+	C-lyrics - A Word Cloud for Lyrics \\
+	\large Implementation Design Document}
+
+\begin{document}
+
+\clearpage\maketitle
+\thispagestyle{empty}
+
+\pagebreak
+
+\tableofcontents
+\setcounter{tocdepth}{4}
+\thispagestyle{empty}
+
+\pagebreak
+
+\section{Executive Summary}\label{executive-summary}
+
+C-lyrics is a public website that will generate a word cloud for any
+given artist based on the most frequently used words that appear across
+all of the artist's published songs. This product will interface with
+the EchoNest API which will serve as the database from which we find and
+analyze the songs. By clicking on a specific word in the word cloud the
+user can see a list of all of the songs that word appears in and how
+frequently it occurs in each song. Furthermore, the user can click on
+any listed song title to see the complete lyrics for that song with the
+original word that was selected from the word cloud highlighted every
+time it appears.
+
+C-lyrics is intended for use by the general public. There will be no
+login required and there is no stored history of previous searches.
+Because of this we will have very low memory requirements and can run
+the product off of one server. The user can access C-lyrics using any
+device running any OS, assuming it has an internet connection. After
+typing in the artist name and selecting the submit button, the word
+cloud will be generated and will be able to be shared via Facebook.
+
+\pagebreak
+
+\section{\textbf{1 Introduction}}\label{introduction}
+
+\subsection{\textbf{1.1 Overview}}\label{overview}
+
+The objective of this document is to deliver, demonstrate and document
+the first implementation of the C-lyrics software product to the
+customer. It includes detailed description of the code base management
+policies, mapping to the project management plan, and mappings to the
+design document for verification purposes. A startup guide to the
+deliverable software is also included to guide the customer
+
+\subsection{\textbf{1.2. Scope}}\label{scope}
+
+The intended audience of this document however is for the client and the
+future maintainers of the code base who will presumably be hired by the
+client. Ideally, the document should clarify the implementation
+techniques by making them predictable given that they follow the prior
+documents on design and management and this is the guiding principle
+with which the document is drafted. Consequently, some sections will
+include designs and descriptions taken from these prior documents on
+design and management.
+
+\subsection{1.3 References}\label{references}
+
+{[}1{]} IEEE. IEEE Std 830-1998 IEEE Recommended Practice for Software
+Requirements Specifications. IEEE Computer Society, 1998.
+
+{[}2{]} ``word cloud''.
+\href{http://www.oxforddictionaries.com/us/definition/american_english/word-cloud}{Oxforddictionaries.com}
+(January 31, 2015)
+
+{[}3{]} EchoNest API
+\href{http://developer.echonest.com/docs/v4/index.html\#overview}{documentation}
+(January 29, 2015)
+
+{[}4{]} A document to remind us the definitions of each UML symbol
+\href{http://loufranco.com/wp-content/uploads/2012/11/cheatsheet.pdf}{UML
+Cheatsheet} (February 17, 2015)
+
+\subsection{1.4 Definitions And
+Acronyms}\label{definitions-and-acronyms}
+
+\begin{longtable}[c]{@{}ll@{}}
+\toprule\addlinespace
+\begin{minipage}[t]{0.47\columnwidth}\raggedright
+Term
+\end{minipage} & \begin{minipage}[t]{0.47\columnwidth}\raggedright
+Definition
+\end{minipage}
+\\
+\hline
+\\\addlinespace
+\begin{minipage}[t]{0.47\columnwidth}\raggedright
+AJAX
+\end{minipage} & \begin{minipage}[t]{0.47\columnwidth}\raggedright
+Asynchronous JavaScript And XML. Technology allowing the transfer of
+data from between the front- and back-end without reloading the web
+page.
+\end{minipage}
+\\\addlinespace
+\begin{minipage}[t]{0.47\columnwidth}\raggedright
+API (EchoNest)
+\end{minipage} & \begin{minipage}[t]{0.47\columnwidth}\raggedright
+API will refer to the EchoNest API. EchoNest is a free API that allows
+developers to retrieve lyrics and artist information in web pages and
+other programs.
+\end{minipage}
+\\\addlinespace
+\begin{minipage}[t]{0.47\columnwidth}\raggedright
+Autocomplete
+\end{minipage} & \begin{minipage}[t]{0.47\columnwidth}\raggedright
+Autocomplete refers to the functionality addition to the Search Bar,
+allowing users to enter minimal characters and choose artists that are
+most similar to the string and display a picture of those artists next
+to their name.
+\end{minipage}
+\\\addlinespace
+\begin{minipage}[t]{0.47\columnwidth}\raggedright
+Autocomplete Delay
+\end{minipage} & \begin{minipage}[t]{0.47\columnwidth}\raggedright
+A feature designed for the search bar when a user is typing. The delay
+refers to the suspending action while the user is typing, making the
+request to the server for autocomplete.
+\end{minipage}
+\\\addlinespace
+\begin{minipage}[t]{0.47\columnwidth}\raggedright
+Backend
+\end{minipage} & \begin{minipage}[t]{0.47\columnwidth}\raggedright
+References the PHP backend page
+\end{minipage}
+\\\addlinespace
+\begin{minipage}[t]{0.47\columnwidth}\raggedright
+Back to home button
+\end{minipage} & \begin{minipage}[t]{0.47\columnwidth}\raggedright
+A button redirecting the user to the homepage.
+\end{minipage}
+\\\addlinespace
+\begin{minipage}[t]{0.47\columnwidth}\raggedright
+Back to songs button
+\end{minipage} & \begin{minipage}[t]{0.47\columnwidth}\raggedright
+A button redirecting the user to the songs list page.
+\end{minipage}
+\\\addlinespace
+\begin{minipage}[t]{0.47\columnwidth}\raggedright
+Commonly Used Web Browser
+\end{minipage} & \begin{minipage}[t]{0.47\columnwidth}\raggedright
+Browsers such as Firefox, Safari, Chrome, Explorer, and Quora which come
+on mobile phones, tablets and personal computers.
+\end{minipage}
+\\\addlinespace
+\begin{minipage}[t]{0.47\columnwidth}\raggedright
+Customer/Client
+\end{minipage} & \begin{minipage}[t]{0.47\columnwidth}\raggedright
+Dr. William G. Halfond and Sonal Mahajan
+\end{minipage}
+\\\addlinespace
+\begin{minipage}[t]{0.47\columnwidth}\raggedright
+GitHub
+\end{minipage} & \begin{minipage}[t]{0.47\columnwidth}\raggedright
+A web service that provides software version control tools.
+www.github.com
+\end{minipage}
+\\\addlinespace
+\begin{minipage}[t]{0.47\columnwidth}\raggedright
+Stakeholders
+\end{minipage} & \begin{minipage}[t]{0.47\columnwidth}\raggedright
+The client and the development team
+\end{minipage}
+\\\addlinespace
+\begin{minipage}[t]{0.47\columnwidth}\raggedright
+LOC
+\end{minipage} & \begin{minipage}[t]{0.47\columnwidth}\raggedright
+acronym: for Lines of Code
+\end{minipage}
+\\\addlinespace
+\begin{minipage}[t]{0.47\columnwidth}\raggedright
+KSLOC
+\end{minipage} & \begin{minipage}[t]{0.47\columnwidth}\raggedright
+a metric that stands for: 1,000(K) Source Lines of Code
+\end{minipage}
+\\\addlinespace
+\begin{minipage}[t]{0.47\columnwidth}\raggedright
+Desktop Platform
+\end{minipage} & \begin{minipage}[t]{0.47\columnwidth}\raggedright
+A screen whose width exceeds 560px
+\end{minipage}
+\\\addlinespace
+\begin{minipage}[t]{0.47\columnwidth}\raggedright
+Development Team
+\end{minipage} & \begin{minipage}[t]{0.47\columnwidth}\raggedright
+All of the individuals whose names appear on the cover of this document.
+These persons have collectively put this document together and will
+collectively implement the software product described in subsequent
+sections.
+\end{minipage}
+\\\addlinespace
+\begin{minipage}[t]{0.47\columnwidth}\raggedright
+Facebook
+\end{minipage} & \begin{minipage}[t]{0.47\columnwidth}\raggedright
+Online social network service where the generated word cloud image may
+be shared amongst users.
+\end{minipage}
+\\\addlinespace
+\begin{minipage}[t]{0.47\columnwidth}\raggedright
+FR
+\end{minipage} & \begin{minipage}[t]{0.47\columnwidth}\raggedright
+Functional Requirement
+\end{minipage}
+\\\addlinespace
+\begin{minipage}[t]{0.47\columnwidth}\raggedright
+Google Doc
+\end{minipage} & \begin{minipage}[t]{0.47\columnwidth}\raggedright
+An online service provided by Google Inc. where an editable document~can
+be accessed and change simultaneously by the members who have been given
+access to the document. In the case of the development team, google doc
+is the shared resource which contains the source of this SRS document.
+\end{minipage}
+\\\addlinespace
+\begin{minipage}[t]{0.47\columnwidth}\raggedright
+Home Page
+\end{minipage} & \begin{minipage}[t]{0.47\columnwidth}\raggedright
+The first page of the website visited by the user. It contains the Word
+Cloud as well as the Search Bar.
+\end{minipage}
+\\\addlinespace
+\begin{minipage}[t]{0.47\columnwidth}\raggedright
+Lyrics Page
+\end{minipage} & \begin{minipage}[t]{0.47\columnwidth}\raggedright
+The third page of the website, it contains the lyrics for one song,
+which is chosen by the user on the Songs Page. It will have two
+Navigation Buttons that can take the user to either the Home Page or
+back to the Songs Page.
+\end{minipage}
+\\\addlinespace
+\begin{minipage}[t]{0.47\columnwidth}\raggedright
+Mobile Platform
+\end{minipage} & \begin{minipage}[t]{0.47\columnwidth}\raggedright
+A screen whose width is less than or equal to 560px
+\end{minipage}
+\\\addlinespace
+\begin{minipage}[t]{0.47\columnwidth}\raggedright
+MVC
+\end{minipage} & \begin{minipage}[t]{0.47\columnwidth}\raggedright
+The Model-View-Controller Software Pattern
+\end{minipage}
+\\\addlinespace
+\begin{minipage}[t]{0.47\columnwidth}\raggedright
+Navigation Buttons
+\end{minipage} & \begin{minipage}[t]{0.47\columnwidth}\raggedright
+Refers to any button that takes the user to previously visited pages of
+the website.
+\end{minipage}
+\\\addlinespace
+\begin{minipage}[t]{0.47\columnwidth}\raggedright
+Design Document
+\end{minipage} & \begin{minipage}[t]{0.47\columnwidth}\raggedright
+Refers to this document.
+\end{minipage}
+\\\addlinespace
+\begin{minipage}[t]{0.47\columnwidth}\raggedright
+Prototype
+\end{minipage} & \begin{minipage}[t]{0.47\columnwidth}\raggedright
+A small prototype of the software including the barebones of the
+graphical display. Used during the second meeting with the client,
+screenshots available in the appendices.
+\end{minipage}
+\\\addlinespace
+\begin{minipage}[t]{0.47\columnwidth}\raggedright
+Search Bar
+\end{minipage} & \begin{minipage}[t]{0.47\columnwidth}\raggedright
+The initial search bar on the first page of the website. Here, users can
+type in artist or band names to generate a word cloud.
+\end{minipage}
+\\\addlinespace
+\begin{minipage}[t]{0.47\columnwidth}\raggedright
+Share Button
+\end{minipage} & \begin{minipage}[t]{0.47\columnwidth}\raggedright
+The standard, embeddable Facebook share button.
+\end{minipage}
+\\\addlinespace
+\begin{minipage}[t]{0.47\columnwidth}\raggedright
+Software or Product
+\end{minipage} & \begin{minipage}[t]{0.47\columnwidth}\raggedright
+The application software delivered from the supplier to the customer.
+\end{minipage}
+\\\addlinespace
+\begin{minipage}[t]{0.47\columnwidth}\raggedright
+Song List
+\end{minipage} & \begin{minipage}[t]{0.47\columnwidth}\raggedright
+This will be the culmination of all songs found that contain the search
+word indicated by the user.
+\end{minipage}
+\\\addlinespace
+\begin{minipage}[t]{0.47\columnwidth}\raggedright
+Songs Page
+\end{minipage} & \begin{minipage}[t]{0.47\columnwidth}\raggedright
+The second page of the website. It contains the Song List as well as a
+Navigation Button back to the Home Page. The user navigates to the Songs
+page by clicking on a word in the Word Cloud on the Home page.
+\end{minipage}
+\\\addlinespace
+\begin{minipage}[t]{0.47\columnwidth}\raggedright
+Submit Button
+\end{minipage} & \begin{minipage}[t]{0.47\columnwidth}\raggedright
+The button adjacent to the Search Bar. When the user enters an artist
+name into the Search Bar and is ready to generate the Word Cloud, he or she must click on the Submit Button to begin the process.
+\end{minipage}
+\\\addlinespace
+\begin{minipage}[t]{0.47\columnwidth}\raggedright
+add\_to\_cloud
+\end{minipage} & \begin{minipage}[t]{0.47\columnwidth}\raggedright
+a boolean variable that represents if the user has pressed the Add to Cloud Button
+\end{minipage}
+\\\addlinespace
+\begin{minipage}[t]{0.47\columnwidth}\raggedright
+back\_to\_cloud
+\end{minipage} & \begin{minipage}[t]{0.47\columnwidth}\raggedright
+a boolean variable that represents if the user has pressed the Back to Cloud Button
+\end{minipage}
+\\\addlinespace
+\begin{minipage}[t]{0.47\columnwidth}\raggedright
+back\_to\_songs
+\end{minipage} & \begin{minipage}[t]{0.47\columnwidth}\raggedright
+a boolean variable that represents if the user has pressed the Back to Songs Button
+\end{minipage}
+\\\addlinespace
+\begin{minipage}[t]{0.47\columnwidth}\raggedright
+click\_word
+\end{minipage} & \begin{minipage}[t]{0.47\columnwidth}\raggedright
+a boolean variable that represents if the user has clicked a word in the WC
+\end{minipage}
+\\\addlinespace
+\begin{minipage}[t]{0.47\columnwidth}\raggedright
+Error Message Visualization State
+\end{minipage} & \begin{minipage}[t]{0.47\columnwidth}\raggedright
+represents when the user enters an invalid artist name in the Search Bar and presses the Submit Button, causing an error message to appear
+\end{minipage}
+\\\addlinespace
+\begin{minipage}[t]{0.47\columnwidth}\raggedright
+Home State
+\end{minipage} & \begin{minipage}[t]{0.47\columnwidth}\raggedright
+represents when the user first accesses C-Lyrics before a WC is generated on the Home Page
+\end{minipage}
+\\\addlinespace
+\begin{minipage}[t]{0.47\columnwidth}\raggedright
+Lyrics State
+\end{minipage} & \begin{minipage}[t]{0.47\columnwidth}\raggedright
+represents the lyrics of the song that was selected in the Songs Page state and the user being on the Lyrics Page
+\end{minipage}
+\\\addlinespace
+\begin{minipage}[t]{0.47\columnwidth}\raggedright
+searchbar\_Text
+\end{minipage} & \begin{minipage}[t]{0.47\columnwidth}\raggedright
+the user's input in the search bar which is limited to alphanumerical characters
+\end{minipage}
+\\\addlinespace
+\begin{minipage}[t]{0.47\columnwidth}\raggedright
+select\_song
+\end{minipage} & \begin{minipage}[t]{0.47\columnwidth}\raggedright
+a boolean variable that represents if the user has selected a song from the Songs List Page
+\end{minipage}
+\\\addlinespace
+\begin{minipage}[t]{0.47\columnwidth}\raggedright
+share
+\end{minipage} & \begin{minipage}[t]{0.47\columnwidth}\raggedright
+a boolean variable that represents if the user has pressed the Share button
+\end{minipage}
+\\\addlinespace
+\begin{minipage}[t]{0.47\columnwidth}\raggedright
+Song State
+\end{minipage} & \begin{minipage}[t]{0.47\columnwidth}\raggedright
+represents the user selecting a word from the WC and being on the Songs Page
+\end{minipage}
+\\\addlinespace
+\begin{minipage}[t]{0.47\columnwidth}\raggedright
+submit
+\end{minipage} & \begin{minipage}[t]{0.47\columnwidth}\raggedright
+a boolean variable that represents if the user has pressed the Submit Button
+\end{minipage}
+\\\addlinespace
+\begin{minipage}[t]{0.47\columnwidth}\raggedright
+type\_artist
+\end{minipage} & \begin{minipage}[t]{0.47\columnwidth}\raggedright
+a boolean variable that represents if the user typed in a valid artist name to the Search Bar
+\end{minipage}
+\\\addlinespace
+\begin{minipage}[t]{0.47\columnwidth}\raggedright
+Word Cloud Visualization State
+\end{minipage} & \begin{minipage}[t]{0.47\columnwidth}\raggedright
+represents when the user is on the Home Page and a WC is displayed
+\end{minipage}
+\\\addlinespace
+\begin{minipage}[t]{0.47\columnwidth}\raggedright
+Supplier
+\end{minipage} & \begin{minipage}[t]{0.47\columnwidth}\raggedright
+The team developing the product for the customer.
+\end{minipage}
+\\\addlinespace
+\begin{minipage}[t]{0.47\columnwidth}\raggedright
+System
+\end{minipage} & \begin{minipage}[t]{0.47\columnwidth}\raggedright
+The set of machines running the software making it accessible to the
+user.
+\end{minipage}
+\\\addlinespace
+\begin{minipage}[t]{0.47\columnwidth}\raggedright
+User
+\end{minipage} & \begin{minipage}[t]{0.47\columnwidth}\raggedright
+A person who interacts with C-lyrics software
+\end{minipage}
+\\\addlinespace
+\begin{minipage}[t]{0.47\columnwidth}\raggedright
+Word Cloud (WC)
+\end{minipage} & \begin{minipage}[t]{0.47\columnwidth}\raggedright
+A word cloud (otherwise known as a tag cloud) is, according to the
+Oxford Dictionary, an image composed of words used in a particular text
+or subject, in which the size of each word indicates its frequency or
+importance {[}2{]}.
+\end{minipage}
+\\\addlinespace
+\bottomrule
+\end{longtable}
+
+\section{\textbf{2 Verification}}\label{verification}
+
+\section{\textbf{2.1 System Architecture}}\label{system-architecture}
+
+The system architecture remains mostly unchanged from that which is
+described in section 2 of the C-lyrics design document. The frontend and
+backend are split into different repositories in the Github code base
+much like their division as separate components in the system
+architecture diagram in section 2 of the design document. The only
+exception is that LyricFind will not be used as an external API because
+we were unable to acquire an API key to use the service. This fact
+simplifies some UML class and component designs.
+
+\section{\textbf{2.2 Data Flow Deviation}}\label{data-flow-deviation}
+
+Since LyricFind will not be used as an external API, our original data
+flow is different than what we actually built. This issue is detailed in
+Mark Krant's email on February 28, which can be referenced in full in
+the appendix. LyricFind was thought to be a quick and easy API call to
+find all the lyrics for songs of a specified artist, however, it is not
+a free or reliable service and we did not have the budget to pay for
+access to its functionality. The solution we came up with is to use a
+web scraper to get lyrics from LyricsFreak.com. The draw back from this
+solution is that it takes many seconds to load lyrics depending on the
+number of songs the queried artist has.
+
+\section{\textbf{2.3 System Design}}\label{system-design}
+
+While some changes were made that affect the design process of C-lyrics,
+the overall system design remains unchanged. Many aspects like Use Cases
+for example remain completely the same.
+
+\section{\textbf{3 Process Documentation}}\label{process-documentation}
+
+\subsection{\textbf{3.1 Overview of
+Processes}}\label{overview-of-processes}
+
+Based on section 2.2.2, of the PMP, headlined ``Staff and Personnel
+Plan'', each member of the development team was originally assigned
+tasks milestones based on their ``prior knowledge'' with the
+technologies being used, such as PHP for example. However, given certain
+limitations and incidents which will be described in the following
+sections, significant but not detrimental deviations from the processes
+described in the PMP were undertaken. These deviations were naturally
+taken in order to assure the timely and expected completion of the
+software implementation, and the completion of milestones as outlined in
+the PMP.
+
+\subsection{\textbf{3.2 Code Base
+Management}}\label{code-base-management}
+
+The whole code of the project is hosted and managed by the git program
+as mentioned in section 5.2 of the PMP. Specifically, the project has
+been divided into three main repositories; the frontend, the backend and
+a third repository for general purpose. All three of the repositories
+are hosted on GitHub.com. Milestones for the frontend and backend are
+kept within each respective repository. Note again that some deviations
+have occured as mentioned above, but within the context of this section,
+the deviations in questions are in the usage of milestones and issue
+tracking within the Github.com service. Access to the code base will be
+provided to the client either upon request (during development phase) or
+upon completion and verification of the final product
+
+\subsection{\textbf{3.3 Original Milestone
+Assignments}}\label{original-milestone-assignments}
+
+Below is an excerpt from the PMP with complete descriptions of
+milestones D-F, these lettering naming conventions will from now on be
+used to refer to the respective milestones. D-F concern the
+implementation phase of C-lyrics. A-C concern the design phase which is
+as of this date completed, and milestones G-I concern the testing and
+final delivery phase which as of the date of this publication is due on
+March 11, 2015.
+
+\begin{itemize}
+\itemsep1pt\parskip0pt\parsep0pt
+\item
+  Milestones D-F
+
+  \begin{itemize}
+  \itemsep1pt\parskip0pt\parsep0pt
+  \item
+    D: Implementation of the Home Page
+
+    \begin{itemize}
+    \itemsep1pt\parskip0pt\parsep0pt
+    \item
+      D.1: Search bar with autocomplete functionality when typing in an
+      artist's name
+    \item
+      D.2: WC generation with words that can be selected to take the
+      user to the Songs Page
+    \item
+      D.3: Share button to upload the WC to Facebook
+    \item
+      D.4: Add to Cloud button to create a new WC based off of words
+      commonly used by both of the specified artists
+    \end{itemize}
+  \item
+    E: Implementation of the Songs Page
+
+    \begin{itemize}
+    \itemsep1pt\parskip0pt\parsep0pt
+    \item
+      E.1: List of songs sorted by how frequently the selected word is
+      used in each song
+    \item
+      E.2: Song titles in list able to be selected, taking the user to
+      the Lyrics page
+    \item
+      E.3: Back to Home button takes the user back to the Home Page with
+      the WC still displayed and the artist's name still in the Search
+      Bar
+    \end{itemize}
+  \item
+    F: Implementation of the Lyrics Page
+
+    \begin{itemize}
+    \itemsep1pt\parskip0pt\parsep0pt
+    \item
+      F.1: Lyrics displayed on page with the selected word highlighted
+      every time it appears in the song
+    \item
+      F.2: Back to Songs button takes the user back to the Songs Page
+      with the same list of songs still displayed in the same order
+    \item
+      F.3: Back to Home button takes the user back to the Home Page with
+      the WC still displayed and the artist's name still in the Search
+      Bar
+    \end{itemize}
+  \end{itemize}
+\end{itemize}
+
+Deliverables with an asterisk (*) by the due date indicate that there
+are risk factors that may alter the completion date. These risk factors
+include, but are not limited to, changing requirements for each
+deliverable and the deliverables taking either more or less time than
+expected. Due dates for each milestone are listed in the schedule in
+section 4.1 of the PMP, risk factors can be found in section 6 of the
+PMP titled ``Risk Management Plan''. Also note that these dates are
+subject to change by the client and are only tentative (dates are from
+project schedule given by client, where it is noted that they are
+subject to change).
+
+\begin{figure}[htbp]
+\centering
+\includegraphics{StaffAllocation.png}
+\caption{Staff Allocation}
+\end{figure}
+
+To re-iterate the information from the above chart taken from the PMP,
+and to conform the the following sub sections presentation of changes to
+the assigned milestones, refer to the below list of milestones and
+assignees: \emph{D: Justine, Milad }E: Kelsey, Jeff *F: Mark, Sebastien
+
+\subsection{\textbf{3.3 Current Milestone Assignments and
+Deviations}}\label{current-milestone-assignments-and-deviations}
+
+\subsection{\textbf{3.3.1 Milestone
+Deviations}}\label{milestone-deviations}
+
+Changes made to milestone assignees:
+
+\begin{itemize}
+\itemsep1pt\parskip0pt\parsep0pt
+\item
+  D: Sebastien/Justine
+\item
+  E: Sebastien/Kelsey
+\item
+  F: Sebastien
+\end{itemize}
+
+The above changes in assignees were a direct consequence of changes to a
+team member's expected contribution to the implementation. Milad
+Gueramian did not have access to the required development tools due to
+the loss of visual output from his Hewlett Packard laptop computer which
+was expected for use in development of software covered in milestone D.
+Consequently, it became necessary to send the machine in for repairs and
+this team member's role was repurposed, which is explained later in this
+section.
+
+Added milestones not specifically accounted for in the PMP:
+
+\begin{itemize}
+\itemsep1pt\parskip0pt\parsep0pt
+\item
+  (New) Backend: Mark
+\item
+  (New) Documentation: Milad, Jeff
+\end{itemize}
+
+As mentioned before, the PMP states that the development team process
+relies on a principle of matching member tasks based on his/her level of
+prior experience. Through the evolution of our processes, the
+development team, in an effort to be efficient, relies ever more on this
+principle. While the time allocation and estimation of milestones D-F
+were correct at the conception of the PMP, articulation of specific
+details were not. Therefore, new milestones have since been added to
+clearly separate and assign tasks to the appropriate team member based
+on prior experience. Furthermore, the task for the creation of this
+document was not specifically taken into account in the PMP.
+Consequently, Jeff Kang and Milad Gueramian-due to the latter's
+inability to contribute to milestone D-were reassigned to the new
+Documentation milestone.
+
+\subsection{3.3.2 Deviations in Project Monitoring
+Plan}\label{deviations-in-project-monitoring-plan}
+
+\subsubsection{Issue Tracking on Github}\label{issue-tracking-on-github}
+
+In section 5.4 of the PMP, it is stated that the Github.com issue
+tracking system will be used to monitor milestones. Indeed, this is a
+fitting management and documentation tool since the future maintainers
+of the code base will want to have access to the development history of
+the software. The milestones and assignees were not added in this system
+until very recently and all at once, which is not ideal because there is
+no smooth timeline documenting events as they occurred. However, section
+5.4 also indicates that Google Docs will be used as a means of tracking
+issues. This is still true and has helped the development team to
+accurately keep track of issues and milestones and to retroactively add
+them in the Github issue tracker and progress reporting system.
+Furthermore, other communication methods described in earlier documents
+such as a group text messaging thread and a Google email messaging
+thread have been useful in keeping track of progress. Therefore, the
+effects of this deviation were not detrimental in making the planned
+progress.
+
+\subsection{\textbf{3.3.3 Deviation's Cause By Change in
+Timeline}}\label{deviations-cause-by-change-in-timeline}
+
+The client pushed up the due date for the product implementation
+deliverable from Wednesday March 4, 2015 to Monday March 2, 2015. This
+put considerable constraints on the development team in completing the
+milestones set for the original due date at the time of the new, March 2
+due date. Consequently, the development team decided to scrap plans for
+adding some added advantages and assurances to the client and software.
+Sphinx as a documentation management tool, outlined in section 5.1 of
+the PMP, will not be used. The impact of this deviation is that the
+documentation provided by Sphinx form the source code comments will not
+be created and therefor not available on the code base in Github.
+
+Testing efforts were also seriously hampered by the constrained
+timeline. The tests were not as inclusive as was previously planned. As
+stated in section 5.3 of the PMP on software quality assurance, we
+wanted to adopt the test Driven Development Methodology because, ``this
+aims to provide an additional measure for the advancement of the project
+as well as an assurance on its quality''. Because of the earlier due
+date, quality assurance is hampered because we did not have the
+necessary time to run a full coverage of test cases.
+
+\section{4 Startup Instructions}\label{startup-instructions}
+
+\begin{itemize}
+\itemsep1pt\parskip0pt\parsep0pt
+\item
+  Open the virtual machine image provided in the submission.
+\item
+  Execute the command "sudo /opt/lampp/lampp start" (without the quotation marks) and open your favorite browser to the following address: http://localhost/dist
+ \item
+ Hopefully the website should appear. Please note that the application, especially the communication to the server, might feel a bit sluggish. This is probably due to latency problems between the machine and the API, however such problems should disappear as the application is deployed to a production server.
+\end{itemize}
+
+
+\section{\textbf{5. Appendices}}\label{appendices}
+
+\subsection{\textbf{5.1 Issue Tracking And Progress
+Reporting}}\label{issue-tracking-and-progress-reporting}
+
+\subsubsection{5.1.1 Gmail Communications}\label{gmail-communications}
+
+From: Sebastien Arnold, February 28, 2015
+
+So, I just pushed some code on the organization repo.
+(https://github.com/C-Lyrics/frontend) It is not fully working yet, and
+there are still a few things to implement, but we are in good shape.
+From what I understood, Mark has been making some progress as well on
+the PHP, but we have troubles getting the actual lyrics for a given
+song, as well as performance issues.
+
+Performance should not be that much of a problem, as we can always speed
+things up. Regarding the songs issue, I found two unofficial APIs for
+RapGenius:
+http://blog.edforson.me/introducing-genius-api-rapgenius-api-as-a-service/
+and more complete, but more difficult to understand:
+http://api.genius.com/search?q=the+recipe
+
+It would be very good if we could have the backend online as well, on
+the repo of the organization. So that we can have a look at how we want
+to integrate both parts of the application. You should all be invited to
+join, if you were not shoot me an email.
+
+Also, someone should begin to take of the document we have to submit for
+the implementation. Milad, I suggest you do it, that will be easier for
+you than to code stuff, as you don't have your usual tools for coding.
+
+From Mark Krant, February 28, 2015 Just committed the back end. It
+works, but to an extent. Since I could not find a free lyrics API, I
+used a webscraper framework to go to a page for each song by an artist
+and get the lyrics from there. Only problem is that it takes way too
+long, and Sebastien said it can be done using asynchronous calls, but I
+still need to look into that more because I have no idea how to do that.
+A band with like 15-20 songs might take 10-15 seconds to load, but 150+
+songs will cause it to time-out (it times out after 120 seconds). If
+anyone has suggestions / knows how to do it feel free to edit the code.
+It is under /backend/templates/getSongs.php
+
+Also i did not do error checking for the back end yet. so if you try to
+make a word cloud with an artist name ``sdfgh'' then it will blow up.
+it's a quick fix so ill do it soon
+
+\end{document}

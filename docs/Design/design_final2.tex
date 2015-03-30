@@ -554,7 +554,7 @@ Diagram}\label{server-side-class-diagram}
 
 \begin{figure}[htbp]
 \centering
-\includegraphics{php_class_design.png}
+\includegraphics{php_class_design_2.png}
 \caption{Server Side Class Diagram}
 \end{figure}
 
@@ -616,21 +616,35 @@ cache of the browser. However, strictly speaking the user will first be
 redirected to the Homepage which will interact with the cache and
 present the data to the requested page.
 
+One last detail, the HTML template files were considered as classes despite the fact that they do not inherit from any interface or class, in the strict meaning of the word. Several reasons motivated this choice:
+
+\begin{itemize}
+\itemsep1pt\parskip0pt\parsep0pt
+\item
+  There is no classical inheritance in JavaScript, as it is a prototype-based language. As the classical UML diagram was extended to incorporate prototypes and the general AngularJS structure, it felt natural to include the views as well.
+\item
+  All templates and views are processed by AngularJS, as if they were pieces of code. In addition they all have to respect a certain structure defined in the framework, which could be regarded as the equivalent of a Java interface.
+\item
+  The diagrams added valuable information regarding the code and components structure and how different parts interact with each other.
+\end{itemize}
+
 \subsection{3.2 UML Component Diagrams}\label{uml-component-diagrams}
 
 \begin{figure}[htbp]
 \centering
-\includegraphics{component_diagram.jpg}
+\includegraphics{component_diagram_2.jpg}
 \caption{Component Diagrams}
 \end{figure}
 
-The diagram above illustrates the various components in the C-Lyrics
+The diagram below illustrates the various components in the C-Lyrics
 system. These components are key features the user will interact with
 during their experience with the C-Lyrics system. It demonstrates the
 three interfaces that the user interacts with, such as the Home Page,
 the Songs List Page, and the Lyrics Page, as well as which components
 each interface has access to. Additionally, the diagram lays out which
 components each of the back end communication outlets interacts with.
+
+Note that components are completely stand alone and are not inter-dependent, despite the fact that several might appear on the same page. This is due to the reuse of components policy.
 
 \subsection{3.3 UML Use Case Diagrams}\label{uml-use-case-diagrams}
 
@@ -676,7 +690,7 @@ Diagrams}\label{uml-state-machine-diagrams}
 
 \begin{figure}[htbp]
 \centering
-\includegraphics{state_machine.jpg}
+\includegraphics{state_machine_2.jpg}
 \caption{State Machine Diagrams}
 \end{figure}
 
@@ -805,11 +819,11 @@ states.
 
 \begin{figure}[htbp]
 \centering
-\includegraphics{sequence_diagram.jpg}
+\includegraphics{sequence_diagram_2.jpg}
 \caption{Sequence Diagrams}
 \end{figure}
 
-In the figure above, a sequence diagram is used to represent one of the
+In the figure below, a sequence diagram is used to represent one of the
 processes, namely the Select Songs feature, within C-Lyrics. This
 sequence diagram shows how the process will interact with the server and
 the EchoNest API in order to arrive at the Select Songs feature. Several
@@ -828,6 +842,8 @@ is as follows:
 \item
   The server will then generate a Word Cloud (WC) and display it back to
   the user
+\item
+  (Optional) The user can share the generated cloud on Facebook. On Facebook's website the user might receive a confirmation, but C-Lyrics does not receive any kind of data from Facebook.
 \item
   The user can select a word on the WC.
 \item
@@ -852,7 +868,7 @@ satisfied.
 \begin{itemize}
 \itemsep1pt\parskip0pt\parsep0pt
 \item
-  FR1. Web Application-Search Bar: sections 3.1.1 and 3.1.2, front and
+  FR1. Web Application-Search Bar: sections 3.1.1, 3.1.2, and 3.5, front and
   back end search bar functionality
 \item
   FR2. Web Application-Word Cloud: sections 3.1.1, 3.1.2 and 3.4 (state
@@ -862,9 +878,9 @@ satisfied.
 \item
   FR4. Web Application-Lyrics: sections 3.1.1, 3.1.2, 3.2 and 3.4
 \item
-  FR5. Access Through Web: sections 2.1 and 2.2
+  FR5. Access Through Web: sections 2.1 and 2.2, 3.5
 \item
-  FR6. Web Application-Share: sections 3.1.1, 3.3, 3.4
+  FR6. Web Application-Share: sections 3.1.1, 3.3, 3.4, 3.5
 \item
   FR7. Web Application-Add to Cloud section 3.1.3
 \end{itemize}
